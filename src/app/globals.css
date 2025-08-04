@@ -71,8 +71,3 @@ body {
     color: var(--foreground);
     font-family: Graphik, Helvetica;
 }
-
-.colordifference {
-    color: white;
-    mix-blend-mode: difference;
-}
