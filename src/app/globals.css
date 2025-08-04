@@ -1,26 +1,78 @@
 @import "tailwindcss";
 
+/* Regular */
+@font-face {
+    font-family: 'Graphik';
+    src: url('/fonts/Graphik-400-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    /* It's a good practice to keep this */
+}
+
+/* Medium */
+@font-face {
+    font-family: 'Graphik-Medium';
+    src: url('/fonts/Graphik-500-Medium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+.graphik-medium {
+    font-family: 'Graphik-Medium';
+    font-weight: 500
+}
+
+/* Semi-Bold */
+@font-face {
+    font-family: 'Graphik';
+    src: url('/fonts/Graphik-600-SemiBold.otf') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Bold */
+@font-face {
+    font-family: 'Graphik';
+    src: url('/fonts/Graphik-700-Bold.otf') format('opentype');
+    font-weight: 700;
+    /* or 'bold' */
+    font-style: normal;
+    font-display: swap;
+}
+
+.helvetica {
+    font-family: Helvetica !important;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --background: #ffffff;
+    --foreground: #171717;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+    :root {
+        --background: hsl(0 0 96%);
+        --foreground: #0a0a0a;
+    }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: Graphik, Helvetica;
+}
+
+.colordifference {
+    color: white;
+    mix-blend-mode: difference;
 }
