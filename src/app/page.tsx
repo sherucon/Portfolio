@@ -1,5 +1,5 @@
 import 'tailwindcss';
-
+import Image from 'next/image';
 
 export default function Page() {
     return (
@@ -25,7 +25,7 @@ export default function Page() {
                         {/* Left Column - First on mobile, left on desktop */}
                         <div className="text-left lg:order-1 order-1">
                             <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-none tracking-tight helvetica" style={{ mixBlendMode: 'difference' }}>
-                                HELLO<img src="/hellodecor.svg" className="fill-current inline-block mx-1 h-7 sm:h-9 md:h-11 lg:h-13 align-baseline" style={{ mixBlendMode: 'difference', filter: 'brightness(0) invert(1)' }} />&nbsp;&nbsp;&nbsp;<span> I'M</span><br />
+                                HELLO<Image src="/hellodecor.svg" alt="helloDecord" className="fill-current inline-block mx-1 h-7 sm:h-9 md:h-11 lg:h-13 align-baseline" style={{ mixBlendMode: 'difference', filter: 'brightness(0) invert(1)' }} />&nbsp;&nbsp;&nbsp;<span> I'M</span><br />
                                 CREATIVE<br />
                                 TECHNOLOGIST
                             </h1>
