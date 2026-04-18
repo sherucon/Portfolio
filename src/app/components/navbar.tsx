@@ -1,20 +1,72 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import 'tailwindcss';
+import { usePathname } from 'next/navigation';
+
+const tabs: { label: string; href: string; dot?: boolean }[] = [
+    { label: 'Home', href: '/' },
+    { label: 'About', href: '/about' },
+    { label: 'Work', href: '/work', dot: true },
+    { label: 'Contact', href: '/contact' },
+];
 
 export default function Navbar() {
-    const pathname = usePathname()
+    const pathname = usePathname();
+
+    const activeIndex = Math.max(
+        tabs.findIndex((t) => t.href === pathname),
+        0
+    );
 
     return (
-        <nav className='flex justify-center p-8 '>
-            <ul className='flex justify-center items-center py-2 bg-neutral-0/30 backdrop-blur-[10px] shadow-lg border border-neutral-600/20 rounded-full z-50'>
-                <li className='px-1'><Link href='/' className={`text-xs px-4 py-4 text-neutral-600 graphik-medium md:text-base md:px-5 ${pathname === '/' ? 'bg-neutral-200 rounded-full text-neutral-900' : ''}`}>Home</Link></li>
-                <li className='px-1'><Link href='/about' className={`text-xs px-4 py-4 text-neutral-600 graphik-medium md:text-base md:px-5  ${pathname === '/about' ? 'bg-neutral-200 rounded-full text-neutral-900' : ''}`}>About</Link></li>
-                <li className='px-1'><Link href='/work' className={`text-xs px-4 py-4 text-neutral-600 graphik-medium md:text-base md:px-5  ${pathname === '/work' ? 'bg-neutral-200 rounded-full text-neutral-900' : ''}`}><span style={{ color: '#ff4141', fontSize: 25 }}>• </span><span>Work</span></Link></li>
-                <li className='px-1'><Link href='/contact' className={`text-xs px-4 py-4 text-neutral-600 graphik-medium md:text-base md:px-5  ${pathname === '/contact' ? 'bg-neutral-200 rounded-full text-neutral-900' : ''}`}>Contact</Link></li>
-            </ul>
+        <nav className="fixed top-8 left-1/2 -translate-x-1/2 z-50">
+            {/*
+             * Outer pill — liquid glass shell
+             * - bg-white/10 + backdrop-blur for frosted glass base
+             * - ring-1 ring-white/20 for the fine glass edge reflex
+             * - shadow for depth
+             */}
+            <div className="relative flex items-center h-[52px] px-1 rounded-full bg-white/10 backdrop-blur-xl ring-1 ring-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.3),inset_0_-1px_0_rgba(0,0,0,0.1)]">
+
+                {/* Sliding active pill */}
+                <div
+                    className="absolute top-1 left-1 h-[calc(100%-8px)] rounded-full bg-white/25 ring-1 ring-white/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.6),inset_0_-1px_0_rgba(0,0,0,0.1),0_2px_8px_rgba(0,0,0,0.15)] transition-transform duration-[300ms] ease-[cubic-bezier(1,0,0.4,1)]"
+                    style={{
+                        width: 'calc((100% - 8px) / 4)',
+                        transform: `translateX(${activeIndex * 100}%)`,
+                    }}
+                />
+
+                {/* Tab links */}
+                {tabs.map((tab) => {
+                    const isActive = tab.href === pathname;
+                    return (
+                        <Link
+                            key={tab.href}
+                            href={tab.href}
+                            className={[
+                                // layout
+                                'relative z-10 flex items-center justify-center',
+                                'w-[80px] md:w-[96px] h-full',
+                                'rounded-full',
+                                // typography
+                                'text-sm graphik-medium tracking-wide',
+                                'select-none',
+                                // colour & transition
+                                'transition-colors duration-200',
+                                isActive
+                                    ? 'text-black drop-shadow-[0_1px_4px_rgba(0,0,0,0.4)]'
+                                    : 'text-black/60 hover:text-black/90',
+                            ].join(' ')}
+                        >
+                            {tab.dot && (
+                                <span className="w-1.5 h-1.5 rounded-full bg-red-500 mr-1.5 shrink-0" />
+                            )}
+                            {tab.label}
+                        </Link>
+                    );
+                })}
+            </div>
         </nav>
-    )
+    );
 }
