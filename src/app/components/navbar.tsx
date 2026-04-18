@@ -19,7 +19,7 @@ export default function Navbar() {
     );
 
     return (
-        <nav className="fixed top-8 left-1/2 -translate-x-1/2 z-50">
+        <nav className="fixed bottom-4 md:top-8 left-1/2 -translate-x-1/2 z-50">
             {/*
              * Outer pill — liquid glass shell
              * - bg-white/10 + backdrop-blur for frosted glass base
