@@ -10,6 +10,11 @@
     /* It's a good practice to keep this */
 }
 
+.graphik {
+    font-family: 'Graphik';
+    font-weight: 400;
+}
+
 /* Medium */
 @font-face {
     font-family: 'Graphik-Medium';
@@ -33,6 +38,11 @@
     font-display: swap;
 }
 
+.graphik-semibold {
+    font-family: 'Graphik';
+    font-weight: 600;
+}
+
 /* Bold */
 @font-face {
     font-family: 'Graphik';
@@ -43,8 +53,13 @@
     font-display: swap;
 }
 
+.graphik-bold {
+    font-family: 'Graphik';
+    font-weight: 700;
+}
+
 .helvetica {
-    font-family: Helvetica !important;
+    font-family: Helvetica;
 }
 
 :root {
@@ -61,7 +76,7 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --background: hsl(0 0 96%);
+        --background: hsl(0 0 100%);
         --foreground: #0a0a0a;
     }
 }

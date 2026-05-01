@@ -1,7 +1,11 @@
+import Spacer from "../components/spacer";
 
 export default function About() {
     return (
-        <h1>Contact</h1>
+        <>
+            <Spacer />
+            <h1>Contact</h1>
+        </>
     )
 
 }

@@ -19,14 +19,14 @@ export default function Navbar() {
     );
 
     return (
-        <nav className="fixed bottom-4 md:top-8 left-1/2 -translate-x-1/2 z-50">
+        <nav className="fixed bottom-4 md:top-8 left-1/2 -translate-x-1/2 z-50 w-fit pointer-events-none">
             {/*
              * Outer pill — liquid glass shell
              * - bg-white/10 + backdrop-blur for frosted glass base
              * - ring-1 ring-white/20 for the fine glass edge reflex
              * - shadow for depth
              */}
-            <div className="relative flex items-center h-[52px] px-1 rounded-full bg-white/10 backdrop-blur-xl ring-1 ring-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.3),inset_0_-1px_0_rgba(0,0,0,0.1)]">
+            <div className="relative flex items-center h-[52px] px-1 rounded-full bg-white/10 backdrop-blur-xl ring-1 ring-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.3),inset_0_-1px_0_rgba(0,0,0,0.1)] pointer-events-auto">
 
                 {/* Sliding active pill */}
                 <div

@@ -32,7 +32,7 @@ export default function Page() {
                     loop
                     className="absolute top-0 left-0 w-full h-full object-cover"
                 >
-                    <source src="/homebg.mp4" type="video/mp4" />
+                    <source src="https://r2.sherucon.tech/homebg.mp4" type="video/mp4" />
                     Cool background video that your browser blocked 💔
                 </video>
 
@@ -42,7 +42,7 @@ export default function Page() {
 
                         {/* Left Column - First on mobile, left on desktop */}
                         <div className="text-left lg:order-1 order-1">
-                            <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-none tracking-tight helvetica" style={{ mixBlendMode: videoPlaying ? 'difference' : 'normal', color: videoPlaying ? undefined : 'black', transform: videoPlaying ? 'translateZ(0)' : undefined }}>
+                            <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-none tracking-tight helvetica" style={{ color: videoPlaying ? undefined : 'black', mixBlendMode: videoPlaying ? 'difference' : 'normal', transform: videoPlaying ? 'translateZ(0)' : undefined }}>
                                 HELLO<img src="/hellodecor.svg" alt="helloDecor" className="inline-block w-auto mx-1 h-6.5 sm:h-9 md:h-11 lg:h-13.5 align-baseline" style={{ mixBlendMode: videoPlaying ? 'difference' : 'normal', filter: 'brightness(0) invert(1)', transform: videoPlaying ? 'translateZ(0)' : undefined }} />&nbsp;&nbsp;&nbsp;<span> I&apos;M</span><br />
                                 CREATIVE<br />
                                 TECHNOLOGIST
