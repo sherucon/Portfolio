@@ -18,7 +18,7 @@ export default function About() {
         {/* Left card — grows freely with text, never affects right grid rows */}
         <div className="bg-[#f7f7f9] p-5 rounded-3xl text-[#747474]">
           <h1 className="text-3xl graphik-medium text-black ">
-            What I'm about.
+            What I&apos;m about.
           </h1>
           <br />
           <hr className="border-1 rounded-xl border-[#e8e8ea]"></hr>
@@ -41,8 +41,8 @@ export default function About() {
             >
               Resident Evil 4 (2005) ⤷
             </a>{" "}
-            on our computer, and I'd be shit scared around every corner. I'm
-            currently playing{" "}
+            on our computer, and I&apos;d be shit scared around every corner.
+            I&apos;m currently playing{" "}
             <a
               href="https://en.wikipedia.org/wiki/Resident_Evil_9"
               className="underline text-black graphik-medium"
@@ -56,11 +56,11 @@ export default function About() {
           <br />
 
           <p className="text-lg">
-            In the coming years, I'd break my RC and try to build one with the
-            motors from the broken one. Then it was fans and lifts and all sorts
-            of weird abominations. Around the same time, school came around with
-            python and then SQL. I liked it A LOT. I wasn't just using
-            computers, I was building for them, even if it was just a
+            In the coming years, I&apos;d break my RC and try to build one with
+            the motors from the broken one. Then it was fans and lifts and all
+            sorts of weird abominations. Around the same time, school came
+            around with python and then SQL. I liked it A LOT. I wasn&apos;t
+            just using computers, I was building for them, even if it was just a
             calculator.py 😓.
           </p>
 
@@ -74,35 +74,35 @@ export default function About() {
           <br />
 
           <p className="text-lg">
-            Now I spend most of my time building. Lately that's been{" "}
+            Now I spend most of my time building. Lately that&apos;s been{" "}
             <a
               href="https://github.com/sherucon/paranoyar"
               className="underline text-black graphik-medium"
             >
               paraNOyar ⤷
             </a>
-            , something I've been taking pretty seriously. It's around{" "}
+            , something I&apos;ve been taking pretty seriously. It&apos;s around{" "}
             <span className="text-black graphik-medium">
               making AI coding agents more transparent
             </span>
-            , so you actually understand what they're doing instead of blindly
-            trusting them.
+            , so you actually understand what they&apos;re doing instead of
+            blindly trusting them.
           </p>
 
           <br />
 
           <p className="text-lg">
-            Outside of that, I'm either playing games, exploring new tech, or
-            out somewhere with a bit of altitude. I like figuring things out,
-            whether it's a system, a product, or something physical I can take
-            apart.
+            Outside of that, I&apos;m either playing games, exploring new tech,
+            or out somewhere with a bit of altitude. I like figuring things out,
+            whether it&apos;s a system, a product, or something physical I can
+            take apart.
           </p>
 
           <br />
 
           <p className="text-lg">
-            I think we're moving fast in a direction where trust is assumed, not
-            earned. I'd like to work on fixing that.
+            I think we&apos;re moving fast in a direction where trust is
+            assumed, not earned. I&apos;d like to work on fixing that.
           </p>
           <br />
           <br />
