@@ -86,3 +86,8 @@ body {
     color: var(--foreground);
     font-family: Graphik, Helvetica;
 }
+
+/* Hide native cursor on touch elements to allow custom DOM cursor to show */
+.cursor-touch, .cursor-touch * {
+    cursor: none !important;
+}

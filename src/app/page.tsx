@@ -2,6 +2,7 @@
 
 import 'tailwindcss';
 import { useEffect, useRef, useState } from 'react';
+import Sea from './components/sea';
 
 export default function Page() {
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -35,6 +36,7 @@ export default function Page() {
                     <source src="https://r2.sherucon.tech/homebg.mp4" type="video/mp4" />
                     Cool background video that your browser blocked 💔
                 </video>
+                {/* <Sea /> */}
 
                 {/* Text content */}
                 <div className="absolute inset-0 flex items-center justify-center p-4">
