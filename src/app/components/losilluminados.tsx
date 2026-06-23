@@ -34,14 +34,14 @@ const glassMaterial = new THREE.MeshPhysicalMaterial({
 function StudioLights() {
   const toRad = (deg: number) => (deg * Math.PI) / 180;
 
-  // Key light — large area, rear-left (135°)
+  // Key light — large area, rear-left (45°)
   const keyPos = new THREE.Vector3(
     Math.sin(toRad(45)) * 6,
     3,
     Math.cos(toRad(45)) * 6,
   );
 
-  // Fill light — large area, rear-right (-135°)
+  // Fill light — large area, rear-right (-45°)
   const fillPos = new THREE.Vector3(
     Math.sin(toRad(-45)) * 6,
     2,

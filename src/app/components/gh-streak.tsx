@@ -98,7 +98,8 @@ async function fetchStreak(username: string, token: string): Promise<number> {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ query }),
-    next: { revalidate: 3600 },
+    // Revalidate every 5 minutes so today's commits appear quickly on Vercel
+    next: { revalidate: 300 },
   });
 
   if (!res.ok) throw new Error("Failed to fetch GitHub streak");
@@ -115,10 +116,15 @@ async function fetchStreak(username: string, token: string): Promise<number> {
   }
   days.sort((a, b) => a.date.localeCompare(b.date));
 
-  const todayStr = now.toISOString().split("T")[0];
+  // Use a locale-aware date string in IST (Asia/Kolkata) so "today" matches
+  // the GitHub contribution calendar which uses the account's local date.
+  const todayStr = now
+    .toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" }); // "YYYY-MM-DD"
+
   let streak = 0;
   for (let i = days.length - 1; i >= 0; i--) {
     const day = days[i];
+    // Allow today to have 0 contributions (streak isn't broken mid-day)
     if (day.date === todayStr && day.count === 0) continue;
     if (day.count > 0) streak++;
     else break;
@@ -126,6 +132,7 @@ async function fetchStreak(username: string, token: string): Promise<number> {
 
   return streak;
 }
+
 
 // ── Server component — fetches data, renders client widget ────────────────────
 export default async function GhStreak() {
