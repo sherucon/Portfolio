@@ -7,10 +7,13 @@ import LinkedinIcon from "../components/linkedin-icon";
 import Gallery from "../components/gallery";
 
 import GhStreak from "../components/gh-streak";
+import MediumRSS from "../components/medium-rss";
+import LosIll from "../components/losilluminados";
 
 export default function About() {
   return (
     <div className="mx-5 my-0 md:mx-8 lg:mx-16 xl:mx-50">
+      <title>Shreyansh | About</title>
       <Spacer />
 
       {/* Outer 2-column layout: left card | right nested grid — fully independent */}
@@ -150,17 +153,22 @@ export default function About() {
             <Gallery />
           </div>
 
-          <div className="aspect-square bg-[#0a1628] rounded-3xl overflow-hidden"></div>
+          <div className="aspect-square bg-[#F7F7F9] rounded-3xl overflow-hidden">
+            <LosIll />
+          </div>
 
-          <div className="aspect-square bg-[#0d1117] rounded-3xl cursor-touch">
+          <div className="aspect-square rounded-3xl cursor-touch">
             <GhStreak />
           </div>
 
-          <div className="aspect-square bg-[#f7f7f9] rounded-3xl overflow-hidden"></div>
+          <div className="aspect-square bg-[#f7f7f9] rounded-3xl overflow-hidden cursor-touch">
+            <MediumRSS />
+          </div>
 
           {/* Music player — spans both columns of the right panel */}
           <div className="col-span-2 bg-[#f7f7f9] rounded-3xl overflow-hidden h-[450px] cursor-touch">
             <iframe
+              title="AppleMusic"
               className="w-full h-full border-0 rounded-3xl overflow-hidden cursor-touch"
               src="https://embed.music.apple.com/us/playlist/i-love/pl.u-06oxpqztYrEXE5b?theme=light"
               allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"

@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import GithubIcon from "./github-icon";
+import { useEffect, useRef } from "react";
 
 interface StreakColors {
   ring: string;
@@ -19,65 +18,49 @@ interface Props {
 
 const CX = 50,
   CY = 50,
-  R = 40;
+  R = 42;
 const CIRCUMFERENCE = 2 * Math.PI * R;
 
 export default function GhStreakWidget({ streak, username, colors: c }: Props) {
   const circleRef = useRef<SVGCircleElement>(null);
-  const [flameVisible, setFlameVisible] = useState(false);
 
   useEffect(() => {
-    // Reset to empty
     const el = circleRef.current;
     if (!el) return;
     el.style.transition = "none";
     el.style.strokeDashoffset = String(CIRCUMFERENCE);
 
-    // Kick off fill animation after a short delay so the reset registers
-    const startTimer = setTimeout(() => {
+    const t = setTimeout(() => {
       el.style.transition =
         "stroke-dashoffset 1.6s cubic-bezier(0.4, 0, 0.2, 1)";
       el.style.strokeDashoffset = "0";
     }, 120);
 
-    // Show flame when ring finishes
-    const flameTimer = setTimeout(() => setFlameVisible(true), 120 + 1650);
-
-    return () => {
-      clearTimeout(startTimer);
-      clearTimeout(flameTimer);
-    };
+    return () => clearTimeout(t);
   }, [streak]);
 
   return (
     <div
-      className="relative w-full h-full rounded-3xl flex flex-col items-center justify-center overflow-hidden select-none"
-      style={{ background: "#0a1628" }}
+      className="relative w-full h-full rounded-3xl flex flex-col items-center justify-center select-none overflow-hidden"
+      style={{ background: "#f7f7f9" }}
     >
-      {/* Ambient radial glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `radial-gradient(ellipse 55% 55% at 50% 58%, ${c.glow} 0%, transparent 70%)`,
-        }}
-      />
-
-      {/* GitHub icon — top right */}
-      <div className="absolute top-3 right-3 text-[#f0f6fc]">
+      {/* ── GitHub badge — top right ── */}
+      {/* <div className="absolute top-3 right-3 z-10">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           xmlSpace="preserve"
           viewBox="0 0 100 100"
           width="64"
           height="64"
+          stroke="gray"
+          strokeWidth="0.3"
         >
-          {/* Outer box from your SVG */}
+          Rounded white square
           <path
             d="M63.6 5c9 0 13.6 0 18.4 1.5 5.3 1.9 9.5 6.1 11.4 11.4C95 22.8 95 27.3 95 36.4v27.2c0 9 0 13.6-1.5 18.4-1.9 5.3-6.1 9.5-11.4 11.4C77.2 95 72.7 95 63.6 95H36.4c-9 0-13.6 0-18.4-1.5-5.3-2-9.5-6.2-11.5-11.5C5 77.2 5 72.7 5 63.6V36.4c0-9 0-13.6 1.5-18.4 2-5.3 6.2-9.5 11.5-11.5C22.8 5 27.3 5 36.4 5h27.2z"
             fill="#fff"
           />
-
-          {/* GitHub mark */}
+          GitHub mark — scaled up to fill the badge
           <g transform="translate(50 50) scale(1.3) translate(-50 -50)">
             <path
               fill="#181717"
@@ -85,13 +68,21 @@ export default function GhStreakWidget({ streak, username, colors: c }: Props) {
             />
           </g>
         </svg>
-      </div>
+      </div> */}
 
-      {/* Ring + centre content */}
+      {/* ── Neumorphic ring platform ── */}
       <div
-        className="relative z-10 flex items-center justify-center"
-        style={{ width: "62%", aspectRatio: "1" }}
+        className="relative flex items-center justify-center"
+        style={{
+          width: "66%",
+          aspectRatio: "1",
+          borderRadius: "50%",
+          background: "#f0f0f3",
+          boxShadow:
+            "10px 10px 28px rgba(0,0,0,0.13), -10px -10px 28px rgba(0,0,0,0.13)",
+        }}
       >
+        {/* SVG ring */}
         <svg
           viewBox="0 0 100 100"
           className="w-full h-full"
@@ -99,30 +90,23 @@ export default function GhStreakWidget({ streak, username, colors: c }: Props) {
           aria-hidden="true"
         >
           <defs>
-            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor={c.ringAlt} />
               <stop offset="100%" stopColor={c.ring} />
             </linearGradient>
-            <filter id="ringGlow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="2" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
           </defs>
 
-          {/* Track ring */}
+          {/* Track */}
           <circle
             cx={CX}
             cy={CY}
             r={R}
             fill="none"
-            stroke="#1e2d45"
-            strokeWidth="8"
+            stroke="#e0dfe8"
+            strokeWidth="6"
           />
 
-          {/* Animated fill ring */}
+          {/* Animated fill */}
           <circle
             ref={circleRef}
             cx={CX}
@@ -130,28 +114,30 @@ export default function GhStreakWidget({ streak, username, colors: c }: Props) {
             r={R}
             fill="none"
             stroke="url(#ringGrad)"
-            strokeWidth="8"
+            strokeWidth="6"
             strokeLinecap="round"
             strokeDasharray={CIRCUMFERENCE}
             strokeDashoffset={CIRCUMFERENCE}
-            filter="url(#ringGlow)"
           />
         </svg>
 
-        {/* Centre: streak number */}
+        {/* Centre content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span
-            className="leading-none text-white"
-            style={{ fontSize: "clamp(1.6rem, 5.5vw, 2.8rem)" }}
+            className="leading-none text-[45px] md:text-[30px] "
+            style={{
+              color: "#1a1a1a",
+              fontWeight: 500,
+            }}
           >
             {streak}
           </span>
           <span
-            className="mt-0.5"
             style={{
               color: c.ring,
-              fontSize: "clamp(0.5rem, 1.3vw, 0.65rem)",
-              opacity: 0.7,
+              fontSize: "clamp(0.65rem, 1.6vw, 0.85rem)",
+              marginTop: "0.2em",
+              fontWeight: 500,
             }}
           >
             day streak
@@ -159,15 +145,46 @@ export default function GhStreakWidget({ streak, username, colors: c }: Props) {
         </div>
       </div>
 
-      {/* Footer */}
+      {/* ── Footer pill ── */}
       <a
-        className="mt-4 z-10 underline"
-        style={{ color: "#4a6080", fontSize: "clamp(0.5rem, 1.2vw, 0.65rem)" }}
         href={`https://github.com/${username}`}
         target="_blank"
         rel="noopener noreferrer"
+        className="flex items-center gap-2 no-underline"
+        style={{
+          marginTop: "1.5rem",
+          background: "#e4e4e9",
+          borderRadius: "9999px",
+          padding: "0.3rem 0.9rem",
+        }}
       >
-        github.com/{username}
+        {/* Chain/link icon */}
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#888"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{
+            width: "clamp(10px, 1.4vw, 14px)",
+            height: "clamp(10px, 1.4vw, 14px)",
+            flexShrink: 0,
+          }}
+          aria-hidden="true"
+        >
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+        </svg>
+        <span
+          style={{
+            color: "#888",
+            fontSize: "clamp(0.55rem, 1.3vw, 0.75rem)",
+            whiteSpace: "nowrap",
+          }}
+        >
+          github.com/{username}
+        </span>
       </a>
     </div>
   );
