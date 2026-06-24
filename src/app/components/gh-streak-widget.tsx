@@ -78,6 +78,7 @@ export default function GhStreakWidget({ streak, username, colors: c }: Props) {
           aspectRatio: "1",
           borderRadius: "50%",
           background: "#f0f0f3",
+          transform: "translateY(-1rem)",
           boxShadow:
             "10px 10px 28px rgba(0,0,0,0.13), -10px -10px 28px rgba(0,0,0,0.13)",
         }}
@@ -150,9 +151,10 @@ export default function GhStreakWidget({ streak, username, colors: c }: Props) {
         href={`https://github.com/${username}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-2 no-underline"
+        className="flex items-center gap-5 no-underline"
         style={{
-          marginTop: "1.5rem",
+          position: "absolute",
+          bottom: "1.1rem",
           background: "#e4e4e9",
           borderRadius: "9999px",
           padding: "0.3rem 0.9rem",

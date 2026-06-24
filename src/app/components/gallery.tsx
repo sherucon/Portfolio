@@ -6,26 +6,27 @@ import { redirect } from "next/dist/server/api-utils";
 
 const IMAGES: Record<Category, string[]> = {
   nature: [
-    "IMG_20220811_155655__600x600.jpg",
-    "IMG_20230305_075615__600x600.jpg",
-    "IMG_20230402_062658__600x600.jpg",
-    "IMG_20250620_080255__600x600.jpg",
-    "IMG_20250623_150805__600x600.jpg",
+    "nature1.jpg",
+    "nature2.jpg",
+    "nature3.jpg",
+    "nature4.jpg",
+    "nature5.jpg",
   ],
   mountain: [
-    "IMG_20250316_110714__600x600.jpg",
-    "IMG_20250316_150400__600x600.jpg",
-    "IMG_20250317_081837_1___600x600.jpg",
-    "IMG_20250317_182056__600x600.jpg",
-    "IMG_20250622_154149__600x600.jpg",
+    "mountain1.jpg",
+    "mountain2.jpg",
+    "mountain3.jpg",
+    "mountain4.jpg",
+    "mountain5.jpg",
+    "mountain6.jpg",
   ],
   animal: [
-    "IMG_20241222_135941__600x600.jpg",
-    "IMG_20250302_130928__600x600.jpg",
-    "IMG_20250317_111610__600x600.jpg",
-    "IMG_20250620_100417__600x600.jpg",
-    "IMG_20260113_213940__600x600.jpg",
-    "IMG_20260130_120456__600x600.jpg",
+    "animals1.jpg",
+    "animals2.jpg",
+    "animals3.jpg",
+    "animals4.jpg",
+    "animals5.jpg",
+    "animals6.jpg",
   ],
 };
 

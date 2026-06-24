@@ -153,11 +153,11 @@ export default function About() {
             <Gallery />
           </div>
 
-          <div className="aspect-square bg-[#F7F7F9] rounded-3xl overflow-hidden">
+          <div className="aspect-square bg-[#f7f7f9] rounded-3xl overflow-hidden cursor-touch">
             <LosIll />
           </div>
 
-          <div className="aspect-square rounded-3xl cursor-touch">
+          <div className="aspect-square bg-[#f7f7f9] rounded-3xl overflow-hidden cursor-touch">
             <GhStreak />
           </div>
 

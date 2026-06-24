@@ -178,7 +178,7 @@ export default async function MediumRSS() {
                 {/* Text */}
                 <div className="flex-1 min-w-0">
                   <p
-                    className="font-medium text-[#1a1a1a] leading-snug line-clamp-2"
+                    className="font-medium text-[#1a1a1a] leading-snug line-clamp-2 hover:underline"
                     style={{ fontSize: "clamp(0.7rem, 1.5vw, 0.82rem)" }}
                   >
                     {article.title}
@@ -227,7 +227,8 @@ export default async function MediumRSS() {
         rel="noopener noreferrer"
         className="flex items-center gap-2 no-underline self-center"
         style={{
-          marginTop: "0.75rem",
+          position: "absolute",
+          bottom: "1.1rem",
           background: "#e4e4e9",
           borderRadius: "9999px",
           padding: "0.3rem 0.9rem",
