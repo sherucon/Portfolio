@@ -1,60 +1,59 @@
 @import "tailwindcss";
 
+/* Streaming caret blink (used by the paraNOyar work card) */
+@keyframes caretBlink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+}
+.caret-blink {
+    animation: caretBlink 1s steps(1) infinite;
+}
+
 /* Regular */
 @font-face {
-    font-family: 'Graphik';
-    src: url('/fonts/Graphik-400-Regular.otf') format('opentype');
+    font-family: 'SF Pro Display';
+    src: url('https://r2.sherucon.tech/sf-pro-display/SFPRODISPLAYREGULAR.OTF') format('opentype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
-    /* It's a good practice to keep this */
 }
 
 .graphik {
-    font-family: 'Graphik';
+    font-family: 'SF Pro Display';
     font-weight: 400;
 }
 
 /* Medium */
 @font-face {
-    font-family: 'Graphik-Medium';
-    src: url('/fonts/Graphik-500-Medium.otf') format('opentype');
+    font-family: 'SF Pro Display';
+    src: url('https://r2.sherucon.tech/sf-pro-display/SFPRODISPLAYMEDIUM.OTF') format('opentype');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
 }
 
 .graphik-medium {
-    font-family: 'Graphik-Medium';
+    font-family: 'SF Pro Display';
     font-weight: 500
 }
 
-/* Semi-Bold */
-@font-face {
-    font-family: 'Graphik';
-    src: url('/fonts/Graphik-600-SemiBold.otf') format('opentype');
-    font-weight: 600;
-    font-style: normal;
-    font-display: swap;
-}
-
+/* Semi-Bold (no upright semibold file available — mapped to Medium 500) */
 .graphik-semibold {
-    font-family: 'Graphik';
-    font-weight: 600;
+    font-family: 'SF Pro Display';
+    font-weight: 500;
 }
 
 /* Bold */
 @font-face {
-    font-family: 'Graphik';
-    src: url('/fonts/Graphik-700-Bold.otf') format('opentype');
+    font-family: 'SF Pro Display';
+    src: url('https://r2.sherucon.tech/sf-pro-display/SFPRODISPLAYBOLD.OTF') format('opentype');
     font-weight: 700;
-    /* or 'bold' */
     font-style: normal;
     font-display: swap;
 }
 
 .graphik-bold {
-    font-family: 'Graphik';
+    font-family: 'SF Pro Display';
     font-weight: 700;
 }
 
@@ -84,7 +83,7 @@
 body {
     background: var(--background);
     color: var(--foreground);
-    font-family: Graphik, Helvetica;
+    font-family: 'SF Pro Display', Helvetica;
 }
 
 /* Hide native cursor on touch elements to allow custom DOM cursor to show */

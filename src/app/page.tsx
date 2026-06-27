@@ -52,7 +52,7 @@ export default function Page() {
               >
                 HELLO
                 <img
-                  src="/hellodecor.svg"
+                  src="https://r2.sherucon.tech/hellodecor.svg"
                   alt="helloDecor"
                   className="inline-block w-auto mx-1 h-6.5 sm:h-9 md:h-11 lg:h-13.5 align-baseline"
                   style={{
