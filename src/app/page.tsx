@@ -21,6 +21,8 @@ export default function Page() {
 
   return (
     <>
+      <link rel="preconnect" href="https://r2.sherucon.tech/homebg.mp4" />
+      <title>Shreyansh Singh</title>
       {/* Container for blending context */}
       <div className="fixed inset-0 h-dvh">
         {/* Video Background */}
