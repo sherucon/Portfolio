@@ -25,8 +25,8 @@ export default function DetailsSection() {
       return;
 
     const ctx = gsap.context(() => {
-      const leftChildren = gsap.utils.toArray(leftColRef.current.children);
-      const rightChildren = gsap.utils.toArray(rightColRef.current.children);
+      const leftChildren = gsap.utils.toArray(leftColRef.current!.children);
+      const rightChildren = gsap.utils.toArray(rightColRef.current!.children);
 
       const tl = gsap.timeline({
         scrollTrigger: {
