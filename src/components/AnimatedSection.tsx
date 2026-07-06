@@ -70,11 +70,9 @@ export default function AnimatedSection() {
       if (i === 0) return; // First card is already visible
       tl.fromTo(
         card,
-        { y: 80, opacity: 0, rotation: 3 },
+        { opacity: 1 },
         {
-          y: 0,
           opacity: 1,
-          rotation: 0,
           duration: 0.5,
           ease: "power2.out",
           force3D: false,
@@ -193,7 +191,7 @@ export default function AnimatedSection() {
         <div className="flex-1 flex items-center">
           <div
             ref={scrollWrapperRef}
-            className="flex gap-[20px] md:gap-[33px]"
+            className="flex items-start gap-[20px] md:gap-[33px]"
             style={{
               paddingLeft: "calc(50vw - min(42.5vw, 243.5px))",
               paddingRight: "calc(50vw - min(42.5vw, 243.5px))",
