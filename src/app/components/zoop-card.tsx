@@ -138,6 +138,7 @@ const SVGComponent = ({
             className="group/button cursor-pointer"
             onMouseEnter={() => setIsButtonHovered(true)}
             onMouseLeave={() => setIsButtonHovered(false)}
+            onClick={() => window.open("https://zoopchat.vercel.app", "_blank")}
           >
             <circle
               id="button"
