@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import gsap from "gsap";
 
 type OverlayFrame = {
   top: number;
@@ -20,7 +19,6 @@ const SVGComponent = ({
   ...props
 }: React.SVGProps<SVGSVGElement>) => {
   const svgRef = React.useRef<SVGSVGElement | null>(null);
-  const leftPhoneRef = React.useRef<SVGGElement | null>(null);
   const [isButtonHovered, setIsButtonHovered] = React.useState(false);
   const [overlayFrame, setOverlayFrame] = React.useState<OverlayFrame | null>(
     null,
@@ -53,41 +51,6 @@ const SVGComponent = ({
       window.removeEventListener("resize", updateOverlayFrame);
       window.removeEventListener("scroll", updateOverlayFrame, true);
     };
-  }, []);
-
-  React.useEffect(() => {
-    const svg = svgRef.current;
-    const phone = leftPhoneRef.current;
-    if (!svg || !phone) return;
-
-    const ctx = gsap.context(() => {
-      const onEnter = () => {
-        gsap.to(phone, {
-          x: -38,
-          y: -22,
-          duration: 0.55,
-          ease: "power3.out",
-        });
-      };
-      const onLeave = () => {
-        gsap.to(phone, {
-          x: 0,
-          y: 0,
-          duration: 0.45,
-          ease: "power3.inOut",
-        });
-      };
-
-      svg.addEventListener("mouseenter", onEnter);
-      svg.addEventListener("mouseleave", onLeave);
-
-      return () => {
-        svg.removeEventListener("mouseenter", onEnter);
-        svg.removeEventListener("mouseleave", onLeave);
-      };
-    });
-
-    return () => ctx.revert();
   }, []);
   return (
     <>
@@ -165,7 +128,7 @@ const SVGComponent = ({
             />
           </g>
 
-          <g ref={leftPhoneRef}>
+          <g className="transition-transform duration-500 ease-out group-hover/card:-translate-x-[38px] group-hover/card:-translate-y-[22px]">
             <g clipPath="url(#clip1_2011_5)">
               <rect
                 x={113}
