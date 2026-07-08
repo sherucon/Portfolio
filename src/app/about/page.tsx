@@ -9,6 +9,12 @@ import Gallery from "../components/gallery";
 import GhStreak from "../components/gh-streak";
 import MediumRSS from "../components/medium-rss";
 import LosIll from "../components/losilluminados";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Shreyansh | About",
+  description: "Learn more about Shreyansh Singh, a software engineer and designer.",
+};
 
 export default function About() {
   return (

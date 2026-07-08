@@ -3,11 +3,16 @@ import ParanoyarCard from "../components/paranoyar-card";
 import ZoopCard from "../components/zoop-card";
 import BrewLSDCard from "../components/brewlsd-card";
 import PotenadCard from "../components/potenad-card";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Shreyansh | Work",
+  description: "Projects and selected works by Shreyansh Singh.",
+};
 
 export default function About() {
   return (
     <div className="mx-5 my-0 md:mx-8 lg:mx-16 xl:mx-50">
-      <title>Shreyansh | Work</title>
       <link rel="preconnect" href="https://r2.sherucon.tech" />
       <Spacer />
 
