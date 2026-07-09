@@ -4,6 +4,7 @@ import ZoopCard from "../components/zoop-card";
 import BrewLSDCard from "../components/brewlsd-card";
 import PotenadCard from "../components/potenad-card";
 import type { Metadata } from "next";
+import VerityCard from "../components/verity-card";
 
 export const metadata: Metadata = {
   title: "Shreyansh | Work",
@@ -53,10 +54,12 @@ export default function About() {
         <div className="aspect-square bg-[#f7f7f9] rounded-4xl overflow-hidden">
           <BrewLSDCard className="block h-full w-full" />
         </div>
-        <div className="aspect-square bg-[#f7f7f9] rounded-4xl overflow-hidden">
+        <div className="aspect-square bg-[#f7f7f9] rounded-4xl">
           <PotenadCard className="block h-full w-full" />
         </div>
-        <div className="aspect-square bg-[#f7f7f9] rounded-4xl overflow-hidden"></div>
+        <div className="aspect-square bg-[#f7f7f9] rounded-4xl overflow-hidden">
+          <VerityCard className="block h-full w-full" />"
+        </div>
       </div>
 
       <Spacer />
