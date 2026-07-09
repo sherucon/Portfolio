@@ -238,18 +238,6 @@ export default function PotenadAnim() {
   // Final Y: add arc offset only when animating
   const finalY = isAnimating ? bubbleY + arcOff : bubbleY;
 
-  // Status label
-  const label =
-    stage === "idle-message"
-      ? "Original Message"
-      : stage === "encoding"
-        ? "Encoding…"
-        : stage === "idle-url"
-          ? "Secure URL"
-          : stage === "decoding"
-            ? "Decoding…"
-            : "";
-
   return (
     <div
       className="relative w-full h-full overflow-hidden"

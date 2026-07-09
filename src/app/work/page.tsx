@@ -58,7 +58,7 @@ export default function About() {
           <PotenadCard className="block h-full w-full" />
         </div>
         <div className="aspect-square bg-[#f7f7f9] rounded-4xl overflow-hidden">
-          <VerityCard className="block h-full w-full" />"
+          <VerityCard className="block h-full w-full" />
         </div>
       </div>
 
