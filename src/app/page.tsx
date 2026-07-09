@@ -43,6 +43,10 @@ export default function Page() {
   return (
     <>
       <link rel="preconnect" href="https://r2.sherucon.tech/homebg.mp4" />
+      <meta
+        name="google-site-verification"
+        content="s-kj96OSaf-EJMhs8h-9gkfNVek6xQMXphSptcryuF0"
+      />
 
       {showLoader && (
         <div
