@@ -23,7 +23,7 @@ const AGENTS = [
   "opencode",
 ];
 
-export default function Hero() {
+export default function Hero({ onShowcaseComplete }: { onShowcaseComplete?: () => void }) {
   const [step, setStep] = useState<number>(0);
   const [inputValue, setInputValue] = useState("");
   const [typedAgentResponse, setTypedAgentResponse] = useState("");
@@ -57,7 +57,10 @@ export default function Hero() {
       setFlipDegree(900); // 2.5 full flips on X-axis
       setTimeout(() => {
         setFlipComplete(true);
-        setTimeout(() => setShowcaseMode(true), 0);
+        setTimeout(() => {
+          setShowcaseMode(true);
+          onShowcaseComplete?.();
+        }, 1500);
       }, 2000);
     }, 1500);
   };
