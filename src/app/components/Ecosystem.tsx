@@ -64,7 +64,7 @@ export default function Ecosystem() {
               <p className="text-xl md:text-2xl leading-relaxed font-medium max-w-3xl mb-8">
                 The application follows an intercept-and-translate architecture.
                 It hooks directly into the terminal execution pipeline, pauses
-                the AI's execution, uses an LLM to generate a plain-English
+                the AI&apos;s execution, uses an LLM to generate a plain-English
                 translation of the proposed command, and blocks until the user
                 approves.
               </p>

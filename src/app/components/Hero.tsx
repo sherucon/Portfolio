@@ -23,7 +23,11 @@ const AGENTS = [
   "opencode",
 ];
 
-export default function Hero({ onShowcaseComplete }: { onShowcaseComplete?: () => void }) {
+export default function Hero({
+  onShowcaseComplete,
+}: {
+  onShowcaseComplete?: () => void;
+}) {
   const [step, setStep] = useState<number>(0);
   const [inputValue, setInputValue] = useState("");
   const [typedAgentResponse, setTypedAgentResponse] = useState("");
@@ -41,6 +45,16 @@ export default function Hero({ onShowcaseComplete }: { onShowcaseComplete?: () =
   const [isDeleting, setIsDeleting] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showcaseMode, setShowcaseMode] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    if (!showcaseMode) return;
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 500);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [showcaseMode]);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -103,11 +117,11 @@ export default function Hero({ onShowcaseComplete }: { onShowcaseComplete?: () =
         }, 3);
       } else {
         timeout = setTimeout(() => {
+          setInputValue("");
           setStep(1);
         }, 600);
       }
     } else if (step === 1) {
-      setInputValue("");
       timeout = setTimeout(() => {
         setStep(2);
       }, 500);
@@ -216,7 +230,22 @@ export default function Hero({ onShowcaseComplete }: { onShowcaseComplete?: () =
   }, []);
 
   return (
-    <div className="flex flex-col md:flex-row h-[100dvh] w-screen overflow-hidden font-sans">
+    <>
+      {/* Fixed Sticky Smiley */}
+      <div 
+        className={`fixed top-4 right-4 md:top-10 md:right-10 z-[9999] w-20 h-20 md:w-32 md:h-32 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${isScrolled ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-50 -translate-y-10"}`}
+      >
+        <Image
+          src="/smiley.png"
+          alt="Smiley Sticker Fixed"
+          width={400}
+          height={400}
+          className="w-full h-full object-contain drop-shadow-xl"
+          priority
+        />
+      </div>
+
+      <div className="flex flex-col md:flex-row h-[100dvh] w-screen overflow-hidden font-sans">
       {/* Left Panel - Chat */}
       <div
         className={`order-2 md:order-1 ${showcaseMode ? "h-0 md:h-auto md:flex-[0_0_0%] opacity-0 overflow-hidden" : "h-[70%] md:h-auto md:flex-1 opacity-100"} bg-[#161618] text-[#ededed] flex flex-col relative shrink-0 transition-all duration-1000 ease-[cubic-bezier(0.2,0.8,0.2,1)]`}
@@ -345,7 +374,7 @@ export default function Hero({ onShowcaseComplete }: { onShowcaseComplete?: () =
               <div className="text-[15px] leading-relaxed text-[#e0e0e0]">
                 <p className="m-0">
                   Successfully installed the ParaNOyar skill on your computer!
-                  You're fully protected now.
+                  You&apos;re fully protected now.
                 </p>
               </div>
             </div>
@@ -412,7 +441,6 @@ export default function Hero({ onShowcaseComplete }: { onShowcaseComplete?: () =
         </div>
       </div>
 
-      {/* Right Panel - Image */}
       <div
         className={`order-1 md:order-2 ${showcaseMode ? "h-full md:flex-[1_0_100%]" : "h-[30%] md:h-auto md:flex-1"} bg-white flex items-center justify-center relative [perspective:800px] shrink-0 transition-all duration-1000 ease-[cubic-bezier(0.2,0.8,0.2,1)]`}
         onMouseMove={handleMouseMove}
@@ -445,7 +473,7 @@ export default function Hero({ onShowcaseComplete }: { onShowcaseComplete?: () =
           >
             {/* Face B (Smiley) - Relative for sizing */}
             <div
-              className="[backface-visibility:hidden] flex items-center justify-center w-full"
+              className={`[backface-visibility:hidden] flex items-center justify-center w-full transition-opacity duration-500 ${isScrolled ? "opacity-0" : "opacity-100"}`}
               style={{ transform: "rotateX(180deg) translateZ(1px)" }}
             >
               <Image
@@ -453,7 +481,9 @@ export default function Hero({ onShowcaseComplete }: { onShowcaseComplete?: () =
                 alt="Smiley Sticker"
                 width={1000}
                 height={1000}
-                className={`w-auto xl:w-full h-auto object-contain drop-shadow-2xl transition-all duration-1000 ${showcaseMode ? "max-w-[90%] md:max-w-[60%] xl:max-w-[50%] max-h-[80vh] md:max-h-none" : "max-w-[60%] md:max-w-[80%] xl:max-w-[60%] max-h-[15vh] md:max-h-none"}`}
+                className={`w-auto xl:w-full h-auto object-contain drop-shadow-2xl transition-all duration-1000 ${
+                  showcaseMode ? "max-w-[90%] md:max-w-[60%] xl:max-w-[50%] max-h-[80vh] md:max-h-none" : 
+                  "max-w-[60%] md:max-w-[80%] xl:max-w-[60%] max-h-[15vh] md:max-h-none"}`}
                 priority
               />
             </div>
@@ -486,6 +516,7 @@ export default function Hero({ onShowcaseComplete }: { onShowcaseComplete?: () =
           </p>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

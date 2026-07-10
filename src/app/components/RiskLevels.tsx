@@ -78,6 +78,19 @@ function AgentWindow({
   useEffect(() => {
     if (!hasStarted) return;
 
+    const isMobileNow = window.innerWidth < 1024;
+
+    if (isMobileNow) {
+      setTimeout(() => {
+        setTypedPrompt(userPrompt);
+        setTypedThought(thoughtText);
+        setTypedCommand(commandLine);
+        setStep(4);
+        if (shakeOnCommand) setIsShaking(true);
+      }, 0);
+      return;
+    }
+
     let isMounted = true;
     
     const runSequence = async () => {

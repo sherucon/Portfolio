@@ -24,7 +24,7 @@ export default function AnxietySection() {
         </div>
         <div className="absolute top-[85%] left-[10%] animate-[slideLeft_35s_linear_infinite]">
           <span className="text-yellow-500 mr-20">
-            echo "export PATH=/tmp:\$PATH" &gt;&gt; ~/.bashrc
+            echo &quot;export PATH=/tmp:\$PATH&quot; &gt;&gt; ~/.bashrc
           </span>
           <span className="text-yellow-500 mr-20">
             git reset --hard HEAD~10
@@ -37,12 +37,12 @@ export default function AnxietySection() {
         <h2 className="font-black text-5xl md:text-8xl tracking-tighter leading-[0.9] mb-8 uppercase">
           Stop nodding along to commands you{" "}
           <span className="text-[#FF3B30] underline decoration-8 underline-offset-4">
-            don't understand.
+            don&apos;t understand.
           </span>
         </h2>
         <p className="text-xl md:text-3xl font-medium text-gray-400 max-w-3xl mx-auto leading-tight">
-          AI coding agents are powerful. They're also terrifying when they
-          silently run destructive commands while you're skimming their
+          AI coding agents are powerful. They&apos;re also terrifying when they
+          silently run destructive commands while you&apos;re skimming their
           explanation.
         </p>
       </div>
