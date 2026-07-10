@@ -14,6 +14,15 @@ ParaNOyar sits between me and your terminal. Whenever I want to execute shell co
 
 That way you don't have to blindly trust a wall of terminal commands—you can understand them first and stay in control.`;
 
+const AGENTS = [
+  "claude-code",
+  "cursor",
+  "antigravity",
+  "cline",
+  "windsurf",
+  "opencode",
+];
+
 export default function Hero() {
   const [step, setStep] = useState<number>(0);
   const [inputValue, setInputValue] = useState("");
@@ -27,6 +36,18 @@ export default function Hero() {
   const [flipComplete, setFlipComplete] = useState(false);
   const [isGlancing, setIsGlancing] = useState(false);
   const [isRecovering, setIsRecovering] = useState(false);
+  const [agentIndex, setAgentIndex] = useState(0);
+  const [agentText, setAgentText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [showcaseMode, setShowcaseMode] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize(); // initialize
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleApprove = () => {
     if (installStatus !== "idle") return;
@@ -34,7 +55,10 @@ export default function Hero() {
     setTimeout(() => {
       setInstallStatus("success");
       setFlipDegree(900); // 2.5 full flips on X-axis
-      setTimeout(() => setFlipComplete(true), 2000);
+      setTimeout(() => {
+        setFlipComplete(true);
+        setTimeout(() => setShowcaseMode(true), 0);
+      }, 2000);
     }, 1500);
   };
 
@@ -105,8 +129,41 @@ export default function Hero() {
     return () => clearTimeout(timeout);
   }, [step, inputValue, typedAgentResponse]);
 
+  // Agent Name Typing Animation
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    const currentAgent = AGENTS[agentIndex];
+
+    if (isDeleting) {
+      if (agentText.length > 0) {
+        timer = setTimeout(() => {
+          setAgentText(currentAgent.substring(0, agentText.length - 1));
+        }, 30); // fast deletion
+      } else {
+        timer = setTimeout(() => {
+          setIsDeleting(false);
+          setAgentIndex((prev) => (prev + 1) % AGENTS.length);
+        }, 500); // pause before typing next word
+      }
+    } else {
+      if (agentText.length < currentAgent.length) {
+        timer = setTimeout(() => {
+          setAgentText(currentAgent.substring(0, agentText.length + 1));
+        }, 30); // typing speed
+      } else {
+        timer = setTimeout(() => {
+          setIsDeleting(true);
+        }, 3000); // pause reading time at full word
+      }
+    }
+
+    return () => clearTimeout(timer);
+  }, [agentText, isDeleting, agentIndex]);
+
   const handleCopy = () => {
-    navigator.clipboard.writeText("npx skills add sherucon/paranoyar");
+    navigator.clipboard.writeText(
+      `npx skills add sherucon/paranoyar -a ${agentText}`,
+    );
     setCopied(true);
     setTimeout(() => {
       setCopied(false);
@@ -137,8 +194,8 @@ export default function Hero() {
         let y = Math.round((e.beta - 45) / 2);
         x = Math.max(-30, Math.min(30, x));
         y = Math.max(-30, Math.min(30, y));
-        
-        setTilt(prev => {
+
+        setTilt((prev) => {
           if (prev.x === x && prev.y === -y) return prev;
           lastUpdate = now;
           return { x, y: -y };
@@ -158,10 +215,12 @@ export default function Hero() {
   return (
     <div className="flex flex-col md:flex-row h-[100dvh] w-screen overflow-hidden font-sans">
       {/* Left Panel - Chat */}
-      <div className="order-2 md:order-1 h-[60%] md:h-auto md:flex-1 bg-[#161618] text-[#ededed] flex flex-col relative shrink-0">
+      <div
+        className={`order-2 md:order-1 ${showcaseMode ? "h-0 md:h-auto md:flex-[0_0_0%] opacity-0 overflow-hidden" : "h-[70%] md:h-auto md:flex-1 opacity-100"} bg-[#161618] text-[#ededed] flex flex-col relative shrink-0 transition-all duration-1000 ease-[cubic-bezier(0.2,0.8,0.2,1)]`}
+      >
         <div className="flex-1 px-4 md:px-[15%] pt-6 md:pt-10 pb-4 md:pb-10 overflow-y-auto flex flex-col gap-5 justify-end">
           {step >= 1 && (
-            <div className="flex justify-end animate-[slideUpFade_0.5s_cubic-bezier(0.16,1,0.3,1)_forwards]">
+            <div className="shrink-0 flex justify-end animate-[slideUpFade_0.5s_cubic-bezier(0.16,1,0.3,1)_forwards]">
               <div className="bg-[#2a2a2f] p-4 px-5 rounded-[20px] max-w-[70%] text-[15px] leading-relaxed flex items-start gap-3 shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
                 <p className="m-0">{USER_PROMPT}</p>
                 <div className="text-[#888] cursor-pointer mt-0.5 shrink-0">
@@ -184,13 +243,13 @@ export default function Hero() {
           )}
 
           {step >= 2 && (
-            <div className="text-[13px] text-[#888] animate-[slideUpFade_0.5s_cubic-bezier(0.16,1,0.3,1)_forwards]">
+            <div className="shrink-0 text-[13px] text-[#888] animate-[slideUpFade_0.5s_cubic-bezier(0.16,1,0.3,1)_forwards]">
               Thought for 1s
             </div>
           )}
 
           {step >= 3 && (
-            <div className="text-[15px] leading-relaxed text-[#e0e0e0] animate-[slideUpFade_0.5s_cubic-bezier(0.16,1,0.3,1)_forwards]">
+            <div className="shrink-0 text-[15px] leading-relaxed text-[#e0e0e0] animate-[slideUpFade_0.5s_cubic-bezier(0.16,1,0.3,1)_forwards]">
               {typedAgentResponse.split("\n\n").map((paragraph, idx) => (
                 <p key={idx} className="mt-0 mb-4 last:mb-0">
                   {paragraph}
@@ -200,7 +259,7 @@ export default function Hero() {
           )}
 
           {step >= 4 && (
-            <div className="bg-[#1e1e22] border border-[#333] rounded-xl overflow-hidden mt-2.5 max-w-[500px] animate-[slideUpFade_0.5s_cubic-bezier(0.16,1,0.3,1)_forwards]">
+            <div className="shrink-0 bg-[#1e1e22] border border-[#333] rounded-xl overflow-hidden mt-2.5 max-w-[500px] animate-[slideUpFade_0.5s_cubic-bezier(0.16,1,0.3,1)_forwards]">
               <div className="flex justify-between items-center px-4 py-3 bg-[#1a1a1c] border-b border-[#333] text-[13px] text-[#aaa]">
                 <span>Run command?</span>
 
@@ -240,7 +299,8 @@ export default function Hero() {
               </div>
               <div className="p-4 font-mono text-[14px]">
                 <p className="m-0 mb-4 text-[#ddd]">
-                  npx skills add sherucon/paranoyar -a antigravity
+                  npx skills add sherucon/paranoyar -a {agentText}
+                  <span className="inline-block w-[7px] h-[15px] align-middle bg-[#888] ml-[1px] animate-[blink_1s_step-end_infinite]"></span>
                 </p>
                 <div className="flex justify-end gap-3">
                   {installStatus === "idle" ? (
@@ -277,7 +337,7 @@ export default function Hero() {
           )}
 
           {installStatus === "success" && (
-            <div className="flex flex-col gap-2 animate-[slideUpFade_0.5s_cubic-bezier(0.16,1,0.3,1)_forwards]">
+            <div className="shrink-0 flex flex-col gap-2 animate-[slideUpFade_0.5s_cubic-bezier(0.16,1,0.3,1)_forwards]">
               <div className="text-[13px] text-[#888]">Ran command</div>
               <div className="text-[15px] leading-relaxed text-[#e0e0e0]">
                 <p className="m-0">
@@ -351,14 +411,16 @@ export default function Hero() {
 
       {/* Right Panel - Image */}
       <div
-        className="order-1 md:order-2 h-[40%] md:h-auto md:flex-1 bg-white flex items-center justify-center relative [perspective:800px] shrink-0"
+        className={`order-1 md:order-2 ${showcaseMode ? "h-full md:flex-[1_0_100%]" : "h-[30%] md:h-auto md:flex-1"} bg-white flex items-center justify-center relative [perspective:800px] shrink-0 transition-all duration-1000 ease-[cubic-bezier(0.2,0.8,0.2,1)]`}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
         {/* Brutalist Title */}
-        <div className="absolute top-6 md:top-10 w-full flex justify-center pointer-events-none z-0">
+        <div
+          className={`absolute top-6 md:top-10 w-full flex justify-center pointer-events-none z-0 transition-opacity duration-1000 ${showcaseMode ? "opacity-0" : "opacity-100"}`}
+        >
           <h1 className="font-black text-[50px] md:text-[100px] xl:text-[140px] tracking-tighter leading-none text-[#111] select-none m-0">
-            paraNOyar
+            para<span className="underline">NO</span>yar
           </h1>
         </div>
 
@@ -367,26 +429,28 @@ export default function Hero() {
           className={`relative z-10 w-full flex items-center justify-center [transform-style:preserve-3d] will-change-transform transition-transform ${isGlancing || isRecovering ? "duration-700 ease-in-out" : "duration-100 ease-out"}`}
           style={{
             transform: isGlancing
-              ? `rotateY(-15deg) rotateX(-5deg)`
+              ? isMobile
+                ? `rotateY(0deg) rotateX(-15deg)`
+                : `rotateY(-15deg) rotateX(-5deg)`
               : `rotateY(${tilt.x}deg) rotateX(${tilt.y}deg)`,
           }}
         >
           {/* Flip Container */}
           <div
             className="relative flex items-center justify-center transition-transform duration-[2000ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] [transform-style:preserve-3d] w-full"
-            style={{ transform: `rotateX(${flipDegree}deg)` }}
+            style={{ transform: `translateZ(40px) rotateX(${flipDegree}deg)` }}
           >
             {/* Face B (Smiley) - Relative for sizing */}
             <div
               className="[backface-visibility:hidden] flex items-center justify-center w-full"
-              style={{ transform: "rotateX(180deg) translateZ(40px)" }}
+              style={{ transform: "rotateX(180deg) translateZ(1px)" }}
             >
               <Image
                 src="/smiley.png"
                 alt="Smiley Sticker"
-                width={600}
-                height={600}
-                className="max-w-[80%] h-auto object-contain drop-shadow-2xl"
+                width={1000}
+                height={1000}
+                className={`w-auto xl:w-full h-auto object-contain drop-shadow-2xl transition-all duration-1000 ${showcaseMode ? "max-w-[90%] md:max-w-[60%] xl:max-w-[50%] max-h-[80vh] md:max-h-none" : "max-w-[60%] md:max-w-[80%] xl:max-w-[60%] max-h-[15vh] md:max-h-none"}`}
                 priority
               />
             </div>
@@ -395,14 +459,14 @@ export default function Hero() {
             {!flipComplete && (
               <div
                 className="absolute inset-0 [backface-visibility:hidden] flex items-center justify-center w-full"
-                style={{ transform: "translateZ(40px)" }}
+                style={{ transform: "translateZ(1px)" }}
               >
                 <Image
                   src="/paranoid.png"
                   alt="ParaNOyar Sticker"
-                  width={600}
-                  height={600}
-                  className="max-w-[80%] h-auto object-contain drop-shadow-2xl"
+                  width={1000}
+                  height={1000}
+                  className="max-w-[60%] md:max-w-[80%] xl:max-w-[60%] max-h-[15vh] md:max-h-none w-auto xl:w-full h-auto object-contain drop-shadow-2xl"
                   priority
                 />
               </div>
@@ -411,7 +475,9 @@ export default function Hero() {
         </div>
 
         {/* Subtitle */}
-        <div className="absolute bottom-6 md:bottom-12 w-full flex justify-center pointer-events-none z-0 px-4 text-center">
+        <div
+          className={`absolute bottom-6 md:bottom-12 w-full flex justify-center pointer-events-none z-0 px-4 text-center transition-opacity duration-1000 ${showcaseMode ? "opacity-0" : "opacity-100"}`}
+        >
           <p className="font-black text-[11px] md:text-2xl lg:text-3xl tracking-tight text-[#111] select-none m-0 uppercase">
             Informed consent for coding agents.
           </p>
