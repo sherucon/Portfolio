@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 
 const USER_PROMPT =
@@ -46,6 +47,11 @@ export default function Hero({
   const [isMobile, setIsMobile] = useState(false);
   const [showcaseMode, setShowcaseMode] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!showcaseMode) return;
@@ -232,18 +238,21 @@ export default function Hero({
   return (
     <>
       {/* Fixed Sticky Smiley */}
-      <div
-        className={`fixed top-4 right-4 md:top-10 md:right-10 z-[9999] w-20 h-20 md:w-32 md:h-32 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${isScrolled ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-50 -translate-y-10"}`}
-      >
-        <Image
-          src="/smiley.png"
-          alt="Smiley Sticker Fixed"
-          width={400}
-          height={400}
-          className="w-full h-full object-contain drop-shadow-xl"
-          priority
-        />
-      </div>
+      {isMounted && typeof document !== "undefined" && createPortal(
+        <div
+          className={`fixed top-4 right-4 md:top-10 md:right-10 z-[9999] w-20 h-20 md:w-32 md:h-32 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${isScrolled ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-50 -translate-y-10"}`}
+        >
+          <Image
+            src="/smiley.png"
+            alt="Smiley Sticker Fixed"
+            width={400}
+            height={400}
+            className="w-full h-full object-contain drop-shadow-xl"
+            priority
+          />
+        </div>,
+        document.body
+      )}
 
       <div className="flex flex-col md:flex-row h-[100dvh] w-screen overflow-hidden font-sans bg-[#161618]">
         {/* Left Panel - Chat */}
