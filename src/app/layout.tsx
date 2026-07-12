@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { GeistPixelSquare } from "geist/font/pixel";
 import "./globals.css";
-
+import SmoothScroll from "./components/SmoothScroll";
 export const metadata: Metadata = {
   title: "paraNOyar",
   description:
@@ -14,11 +14,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${GeistPixelSquare.className} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="en" className={`${GeistPixelSquare.className} antialiased`}>
+      <body className="flex flex-col">
+        <SmoothScroll>{children}</SmoothScroll>
+      </body>
     </html>
   );
 }
