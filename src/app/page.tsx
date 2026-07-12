@@ -8,6 +8,7 @@ import RiskLevels from "./components/RiskLevels";
 import Marquee from "./components/Marquee";
 import Ecosystem from "./components/Ecosystem";
 import InstallFooter from "./components/InstallFooter";
+import ScrollProgress from "./components/ScrollProgress";
 
 export default function Home() {
   const [canScroll, setCanScroll] = useState(false);
@@ -38,6 +39,8 @@ export default function Home() {
     <main
       className={canScroll ? "relative" : "h-[100dvh] overflow-hidden relative"}
     >
+      <ScrollProgress isVisible={canScroll} />
+
       {/* Hero Section doesn't need extra scroll padding since it already has showcase logic */}
       <div className="relative z-10 bg-[#161618]">
         <Hero onShowcaseComplete={() => setCanScroll(true)} />
@@ -50,7 +53,7 @@ export default function Home() {
       </div>
 
       <div className="h-[250vh] relative z-30 bg-[#f4f4f4]">
-        <div className="sticky top-0 h-screen overflow-hidden">
+        <div className="md:sticky md:top-0 md:h-screen md:overflow-hidden">
           <RiskLevels />
         </div>
       </div>
@@ -59,8 +62,8 @@ export default function Home() {
         <Marquee />
       </div>
 
-      <div className="h-[150vh] sticky top-0 relative z-30 bg-[#f4f4f4]">
-        <div className="sticky top-0 h-screen overflow-hidden">
+      <div className="h-auto relative z-30 bg-[#f4f4f4]">
+        <div className="md:sticky md:top-0 md:h-screen md:overflow-hidden">
           <Ecosystem />
         </div>
       </div>
