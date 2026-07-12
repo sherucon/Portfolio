@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { GeistPixelSquare } from "geist/font/pixel";
 import "./globals.css";
 import SmoothScroll from "./components/SmoothScroll";
+import ScrollProgress from "./components/ScrollProgress";
 export const metadata: Metadata = {
   title: "paraNOyar",
   description:
@@ -16,7 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistPixelSquare.className} antialiased`}>
       <body className="flex flex-col">
-        <SmoothScroll>{children}</SmoothScroll>
+        <SmoothScroll>
+          <ScrollProgress />
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );

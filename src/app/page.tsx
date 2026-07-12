@@ -19,18 +19,18 @@ export default function Home() {
       document.body.style.overflow = "hidden";
       lenis?.stop();
     } else {
-      document.documentElement.style.overflow = "auto";
-      document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
       lenis?.start();
       lenis?.resize();
     }
-    
+
     // Trigger a window resize event to force layout recalculations
     window.dispatchEvent(new Event("resize"));
-    
+
     return () => {
-      document.documentElement.style.overflow = "auto";
-      document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
     };
   }, [canScroll, lenis]);
 
@@ -43,23 +43,29 @@ export default function Home() {
         <Hero onShowcaseComplete={() => setCanScroll(true)} />
       </div>
 
-      <div className="relative z-20">
-        <AnxietySection />
+      <div className="h-[200vh] relative z-20 bg-[#111]">
+        <div className="sticky top-0 h-screen overflow-hidden">
+          <AnxietySection />
+        </div>
       </div>
 
-      <div className="relative z-30">
-        <RiskLevels />
+      <div className="h-[250vh] relative z-30 bg-[#f4f4f4]">
+        <div className="sticky top-0 h-screen overflow-hidden">
+          <RiskLevels />
+        </div>
       </div>
 
       <div className="relative z-40">
         <Marquee />
       </div>
 
-      <div className="relative z-50">
-        <Ecosystem />
+      <div className="h-[150vh] sticky top-0 relative z-30 bg-[#f4f4f4]">
+        <div className="sticky top-0 h-screen overflow-hidden">
+          <Ecosystem />
+        </div>
       </div>
 
-      <div className="relative z-60">
+      <div className=" relative z-60">
         <InstallFooter />
       </div>
     </main>
