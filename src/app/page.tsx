@@ -43,26 +43,20 @@ export default function Home() {
         <Hero onShowcaseComplete={() => setCanScroll(true)} />
       </div>
 
-      <div className="md:h-[250vh] relative z-20 bg-[#111]">
-        <div className="md:sticky md:top-0 md:h-[100dvh] overflow-hidden">
-          <AnxietySection />
-        </div>
+      <div className="relative z-20">
+        <AnxietySection />
       </div>
 
-      <div className="md:h-[250vh] relative z-30 bg-[#f4f4f4]">
-        <div className="md:sticky md:top-0 md:h-[100dvh] overflow-hidden">
-          <RiskLevels />
-        </div>
+      <div className="relative z-30">
+        <RiskLevels />
       </div>
 
       <div className="relative z-40">
         <Marquee />
       </div>
 
-      <div className="md:h-[150vh] relative z-50 bg-[#f4f4f4]">
-        <div className="md:sticky md:top-0 md:h-[100dvh] overflow-hidden">
-          <Ecosystem />
-        </div>
+      <div className="relative z-50">
+        <Ecosystem />
       </div>
 
       <div className="relative z-60">
