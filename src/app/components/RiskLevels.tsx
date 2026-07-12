@@ -104,11 +104,11 @@ function AgentWindow({
         await new Promise((r) => setTimeout(r, typingSpeed));
       }
       
-      await new Promise((r) => setTimeout(r, 300));
+      await new Promise((r) => setTimeout(r, 150));
       if (!isMounted) return;
       setStep(1); // Show prompt bubble
       
-      await new Promise((r) => setTimeout(r, 600));
+      await new Promise((r) => setTimeout(r, 250));
       if (!isMounted) return;
       setStep(2); // Show thought
 
@@ -119,11 +119,11 @@ function AgentWindow({
         await new Promise((r) => setTimeout(r, typingSpeed / 2.5)); // fast typing
       }
 
-      await new Promise((r) => setTimeout(r, 500));
+      await new Promise((r) => setTimeout(r, 250));
       if (!isMounted) return;
       setStep(3); // Show interception block
 
-      await new Promise((r) => setTimeout(r, 600));
+      await new Promise((r) => setTimeout(r, 300));
       if (!isMounted) return;
       setStep(4); // Show run command block
 
@@ -256,7 +256,7 @@ export default function RiskLevels() {
           />
 
           <AgentWindow
-            delayOffset={1000}
+            delayOffset={400}
             userPrompt="install the missing package"
             thoughtText="The project needs this dependency to run. I'll install it globally."
             riskLevel="Medium Risk"
@@ -278,7 +278,7 @@ export default function RiskLevels() {
           />
 
           <AgentWindow
-            delayOffset={2000}
+            delayOffset={800}
             userPrompt="clean up the workspace"
             thoughtText="I will delete all the files in the directory to give us a fresh start."
             riskLevel="High Risk"
