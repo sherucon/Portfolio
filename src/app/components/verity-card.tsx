@@ -93,6 +93,9 @@ const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
             className="group/button cursor-pointer"
             onMouseEnter={() => setIsButtonHovered(true)}
             onMouseLeave={() => setIsButtonHovered(false)}
+            onClick={() =>
+              window.open("https://github.com/sherucon/verity", "_blank")
+            }
           >
             <circle
               cx={892}
@@ -168,7 +171,13 @@ const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
             xlinkHref="https://r2.sherucon.tech/work-cards/verity/doc1.webp"
           />
         </defs>
-        <foreignObject x={139} y={858} width={724} height={114} className="overflow-visible">
+        <foreignObject
+          x={139}
+          y={858}
+          width={724}
+          height={114}
+          className="overflow-visible"
+        >
           <DocSearch />
         </foreignObject>
       </svg>

@@ -100,6 +100,9 @@ const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
             className="group/button cursor-pointer"
             onMouseEnter={() => setIsButtonHovered(true)}
             onMouseLeave={() => setIsButtonHovered(false)}
+            onClick={() =>
+              window.open("https://github.com/sherucon/brew-lsd", "_blank")
+            }
           >
             <circle
               id="button"
