@@ -264,7 +264,7 @@ const SVGComponent = ({
             width={1280}
             height={1280}
             preserveAspectRatio="none"
-            xlinkHref="https://r2.sherucon.tech/work-cards/paranoyar/claude.webp"
+            xlinkHref="https://portfolio.sherucon.dpdns.org/work-cards/paranoyar/claude.webp"
           />
         </defs>
       </svg>

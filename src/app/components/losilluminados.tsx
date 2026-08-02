@@ -8,7 +8,7 @@ import { BlendFunction } from "postprocessing";
 import * as THREE from "three";
 
 // ─── Replace with your actual Cloudflare R2 URL ───────────────────────────────
-const MODEL_URL = "https://r2.sherucon.tech/losill.glb";
+const MODEL_URL = "https://portfolio.sherucon.dpdns.org/losill.glb";
 
 // ─── Glass material ───────────────────────────────────────────────────────────
 const glassMaterial = new THREE.MeshPhysicalMaterial({

@@ -928,49 +928,49 @@ const SVGComponent = ({
             width={219}
             height={219}
             preserveAspectRatio="none"
-            xlinkHref="https://r2.sherucon.tech/work-cards/zoop/image0_2011_5.webp"
+            xlinkHref="https://portfolio.sherucon.dpdns.org/work-cards/zoop/image0_2011_5.webp"
           />
           <image
             id="image1_2011_5"
             width={1350}
             height={2760}
             preserveAspectRatio="none"
-            xlinkHref="https://r2.sherucon.tech/work-cards/zoop/image1_2011_5.webp"
+            xlinkHref="https://portfolio.sherucon.dpdns.org/work-cards/zoop/image1_2011_5.webp"
           />
           <image
             id="image2_2011_5"
             width={736}
             height={1104}
             preserveAspectRatio="none"
-            xlinkHref="https://r2.sherucon.tech/work-cards/zoop/image2_2011_5.webp"
+            xlinkHref="https://portfolio.sherucon.dpdns.org/work-cards/zoop/image2_2011_5.webp"
           />
           <image
             id="image3_2011_5"
             width={768}
             height={768}
             preserveAspectRatio="none"
-            xlinkHref="https://r2.sherucon.tech/work-cards/zoop/image3_2011_5.webp"
+            xlinkHref="https://portfolio.sherucon.dpdns.org/work-cards/zoop/image3_2011_5.webp"
           />
           <image
             id="image4_2011_5"
             width={900}
             height={900}
             preserveAspectRatio="none"
-            xlinkHref="https://r2.sherucon.tech/work-cards/zoop/image4_2011_5.webp"
+            xlinkHref="https://portfolio.sherucon.dpdns.org/work-cards/zoop/image4_2011_5.webp"
           />
           <image
             id="image5_2011_5"
             width={637}
             height={619}
             preserveAspectRatio="none"
-            xlinkHref="https://r2.sherucon.tech/work-cards/zoop/image5_2011_5.webp"
+            xlinkHref="https://portfolio.sherucon.dpdns.org/work-cards/zoop/image5_2011_5.webp"
           />
           <image
             id="image6_2011_5"
             width={236}
             height={236}
             preserveAspectRatio="none"
-            xlinkHref="https://r2.sherucon.tech/work-cards/zoop/image6_2011_5.webp"
+            xlinkHref="https://portfolio.sherucon.dpdns.org/work-cards/zoop/image6_2011_5.webp"
           />
         </defs>
       </svg>

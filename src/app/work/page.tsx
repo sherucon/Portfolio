@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function About() {
   return (
     <div className="mx-5 my-0 md:mx-8 lg:mx-16 xl:mx-50">
-      <link rel="preconnect" href="https://r2.sherucon.tech" />
+      <link rel="preconnect" href="https://portfolio.sherucon.dpdns.org" />
       <Spacer />
 
       <div className="items-center justify-end mb-1 hidden md:flex">

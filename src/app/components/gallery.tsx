@@ -36,7 +36,7 @@ const FOLDER: Record<Category, string> = {
   animal: "animals-comp",
 };
 
-const BASE_URL = "https://r2.sherucon.tech";
+const BASE_URL = "https://portfolio.sherucon.dpdns.org";
 const AUTOPLAY_MS = 4000;
 const FADE_MS = 600;
 

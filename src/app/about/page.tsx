@@ -13,13 +13,14 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Shreyansh | About",
-  description: "Learn more about Shreyansh Singh, a software engineer and designer.",
+  description:
+    "Learn more about Shreyansh Singh, a software engineer and designer.",
 };
 
 export default function About() {
   return (
     <div className="mx-5 my-0 md:mx-8 lg:mx-16 xl:mx-50">
-      <link rel="preconnect" href="https://r2.sherucon.tech" />
+      <link rel="preconnect" href="https://portfolio.sherucon.dpdns.org" />
       <link
         rel="preconnect"
         href="https://embed.music.apple.com/us/playlist/i-love/pl.u-06oxpqztYrEXE5b?theme=light"
