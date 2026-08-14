@@ -517,7 +517,7 @@ export default function Hero({
                   style={{ transform: "translateZ(1px)" }}
                 >
                   <Image
-                    src="https://portflio.sherucon.dpdns.org/work-cards/paranoyar/paranoid.webp"
+                    src="https://portfolio.sherucon.dpdns.org/work-cards/paranoyar/paranoid.webp"
                     alt="ParaNOyar Sticker"
                     width={1000}
                     height={1000}
