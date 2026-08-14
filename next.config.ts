@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "r2.sherucon.tech",
+        hostname: "portfolio.sherucon.dpdns.org",
       },
     ],
   },
