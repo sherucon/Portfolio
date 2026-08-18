@@ -168,7 +168,7 @@ const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
             width={1103}
             height={1426}
             preserveAspectRatio="none"
-            xlinkHref="https://portfolio.sherucon.dpdns.org/work-cards/verity/doc1.webp"
+            xlinkHref="https://portfolio.sherucon.me/work-cards/verity/doc1.webp"
           />
         </defs>
         <foreignObject

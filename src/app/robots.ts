@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://sherucon.vercel.app/sitemap.xml',
+    sitemap: 'https://sherucon.me/sitemap.xml',
   };
 }

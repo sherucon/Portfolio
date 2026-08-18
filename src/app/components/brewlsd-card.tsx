@@ -179,14 +179,14 @@ const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
             width={3420}
             height={2146}
             preserveAspectRatio="none"
-            xlinkHref="https://portfolio.sherucon.dpdns.org/work-cards/brewlsd/demo.webp"
+            xlinkHref="https://portfolio.sherucon.me/work-cards/brewlsd/demo.webp"
           />
           <image
             id="image1_2112_67"
             width={1254}
             height={1254}
             preserveAspectRatio="none"
-            xlinkHref="https://portfolio.sherucon.dpdns.org/work-cards/brewlsd/holo.webp"
+            xlinkHref="https://portfolio.sherucon.me/work-cards/brewlsd/holo.webp"
           />
         </defs>
       </svg>

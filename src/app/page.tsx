@@ -42,10 +42,7 @@ export default function Page() {
 
   return (
     <>
-      <link
-        rel="preconnect"
-        href="https://portfolio.sherucon.dpdns.org/homebg.mp4"
-      />
+      <link rel="preconnect" href="https://portfolio.sherucon.me/homebg.mp4" />
       <meta
         name="google-site-verification"
         content="s-kj96OSaf-EJMhs8h-9gkfNVek6xQMXphSptcryuF0"
@@ -94,7 +91,7 @@ export default function Page() {
           className="absolute top-0 left-0 w-full h-full object-cover"
         >
           <source
-            src="https://portfolio.sherucon.dpdns.org/homebg.mp4"
+            src="https://portfolio.sherucon.me/homebg.mp4"
             type="video/mp4"
           />
           Cool background video that your browser blocked 💔
@@ -116,7 +113,7 @@ export default function Page() {
               >
                 HELLO
                 <img
-                  src="https://portfolio.sherucon.dpdns.org/hellodecor.svg"
+                  src="https://portfolio.sherucon.me/hellodecor.svg"
                   alt="helloDecor"
                   className="inline-block w-auto mx-1 h-6.5 sm:h-9 md:h-11 lg:h-13.5 align-baseline"
                   style={{

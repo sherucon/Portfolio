@@ -103,7 +103,7 @@ const SVGComponent = ({
             onMouseEnter={() => setIsButtonHovered(true)}
             onMouseLeave={() => setIsButtonHovered(false)}
             onClick={() =>
-              window.open("https://paranoyar.vercel.app", "_blank")
+              window.open("https://paranoyar.sherucon.me", "_blank")
             }
           >
             <circle
@@ -264,7 +264,7 @@ const SVGComponent = ({
             width={1280}
             height={1280}
             preserveAspectRatio="none"
-            xlinkHref="https://portfolio.sherucon.dpdns.org/work-cards/paranoyar/claude.webp"
+            xlinkHref="https://portfolio.sherucon.me/work-cards/paranoyar/claude.webp"
           />
         </defs>
       </svg>

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 export default function About() {
   return (
     <div className="mx-5 my-0 md:mx-8 lg:mx-16 xl:mx-50">
-      <link rel="preconnect" href="https://portfolio.sherucon.dpdns.org" />
+      <link rel="preconnect" href="https://portfolio.sherucon.me" />
       <link
         rel="preconnect"
         href="https://embed.music.apple.com/us/playlist/i-love/pl.u-06oxpqztYrEXE5b?theme=light"
@@ -87,10 +87,10 @@ export default function About() {
             on our computer, and I&apos;d be shit scared around every corner.
             I&apos;m currently playing{" "}
             <a
-              href="https://en.wikipedia.org/wiki/Resident_Evil_9"
+              href="https://en.wikipedia.org/wiki/Uncharted_3:_Drake's_Deception"
               className="underline text-black graphik-medium"
             >
-              Resident Evil 9 ⤷
+              Uncharted 3 ⤷
             </a>
             . The internet was a privilege I had from a very young age, and ofc
             I used it to play games most of my childhood.
@@ -119,17 +119,17 @@ export default function About() {
           <p className="text-lg">
             Now I spend most of my time building. Lately that&apos;s been{" "}
             <a
-              href="https://github.com/sherucon/paranoyar"
+              href="https://github.com/sherucon/toll"
               className="underline text-black graphik-medium"
             >
-              paraNOyar ⤷
+              Toll ⤷
             </a>
             , something I&apos;ve been taking pretty seriously. It&apos;s around{" "}
             <span className="text-black graphik-medium">
-              making AI coding agents more transparent
-            </span>
-            , so you actually understand what they&apos;re doing instead of
-            blindly trusting them.
+              making portfolios designed for people, not algorithms.
+            </span>{" "}
+            So you know how the person thinks, instead of just knowing what they
+            did.
           </p>
 
           <br />
@@ -141,12 +141,6 @@ export default function About() {
             take apart.
           </p>
 
-          <br />
-
-          <p className="text-lg">
-            I think we&apos;re moving fast in a direction where trust is
-            assumed, not earned. I&apos;d like to work on fixing that.
-          </p>
           <br />
           <br />
 
