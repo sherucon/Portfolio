@@ -135,8 +135,8 @@ export default function About() {
           <br />
 
           <p className="text-lg">
-            Outside of that, I&apos;m either playing games, exploring new tech,
-            or out somewhere with a bit of altitude. I like figuring things out,
+            Outside of that, I&apos;m either exploring new tech, or out
+            somewhere with a bit of altitude. I like figuring things out,
             whether it&apos;s a system, a product, or something physical I can
             take apart.
           </p>
