@@ -156,17 +156,17 @@ export default function AnimatedSection() {
     );
 
     // Phase 3: Emoji bubbles pop up
-    tl.to(
-      ".emoji-bubble",
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 0.3,
-        stagger: { amount: 0.5 },
-        ease: "back.out(1.5)",
-      },
-      3.5,
-    );
+    // tl.to(
+    //   ".emoji-bubble",
+    //   {
+    //     opacity: 1,
+    //     scale: 1,
+    //     duration: 0.3,
+    //     stagger: { amount: 0.5 },
+    //     ease: "back.out(1.5)",
+    //   },
+    //   3.5,
+    // );
 
     // Add pause at the end so it stays on screen longer
     tl.to({}, { duration: 1.5 });
@@ -361,7 +361,7 @@ export default function AnimatedSection() {
         </div>
       </div>
 
-      {/* Emoji Bubbles Overlay */}
+      /* {Emoji Bubbles Overlay}
       <div className="absolute inset-0 z-50 pointer-events-none overflow-hidden">
         {EMOJI_BUBBLES.map((bubble) => (
           <div
@@ -382,7 +382,7 @@ export default function AnimatedSection() {
             {bubble.e}
           </div>
         ))}
-      </div>
+      </div> */
     </section>
   );
 }
