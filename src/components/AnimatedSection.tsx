@@ -361,28 +361,6 @@ export default function AnimatedSection() {
         </div>
       </div>
 
-      /* {Emoji Bubbles Overlay}
-      <div className="absolute inset-0 z-50 pointer-events-none overflow-hidden">
-        {EMOJI_BUBBLES.map((bubble) => (
-          <div
-            key={bubble.id}
-            className="emoji-bubble absolute opacity-0 bg-white rounded-full flex justify-center items-center shadow-2xl"
-            style={{
-              left: bubble.left,
-              top: bubble.top,
-              width: `${bubble.size * 1.8}px`,
-              height: `${bubble.size * 1.8}px`,
-              fontSize: `${bubble.size}px`,
-              fontFamily:
-                '"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-              transform: `translate(-50%, -50%) rotate(${bubble.r}deg) scale(0)`,
-              willChange: "transform, opacity",
-            }}
-          >
-            {bubble.e}
-          </div>
-        ))}
-      </div> */
-    </section>
+      </section>
   );
 }
