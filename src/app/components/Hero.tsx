@@ -245,7 +245,7 @@ export default function Hero({
             className={`fixed top-4 right-4 md:top-10 md:right-10 z-[9999] w-20 h-20 md:w-32 md:h-32 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${isScrolled ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-50 -translate-y-10"}`}
           >
             <Image
-              src="https://portfolio.sherucon.dpdns.org/work-cards/paranoyar/smiley.webp"
+              src="https://portfolio.sherucon.me/work-cards/paranoyar/smiley.webp"
               alt="Smiley Sticker Fixed"
               width={400}
               height={400}
@@ -497,7 +497,7 @@ export default function Hero({
                 style={{ transform: "rotateX(180deg) translateZ(1px)" }}
               >
                 <Image
-                  src="https://portfolio.sherucon.dpdns.org/work-cards/paranoyar/smiley.webp"
+                  src="https://portfolio.sherucon.me/work-cards/paranoyar/smiley.webp"
                   alt="Smiley Sticker"
                   width={1000}
                   height={1000}
@@ -517,7 +517,7 @@ export default function Hero({
                   style={{ transform: "translateZ(1px)" }}
                 >
                   <Image
-                    src="https://portfolio.sherucon.dpdns.org/work-cards/paranoyar/paranoid.webp"
+                    src="https://portfolio.sherucon.me/work-cards/paranoyar/paranoid.webp"
                     alt="ParaNOyar Sticker"
                     width={1000}
                     height={1000}
