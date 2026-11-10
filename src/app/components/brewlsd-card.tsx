@@ -3,72 +3,10 @@
 import * as React from "react";
 import { SVGProps } from "react";
 
-type OverlayFrame = {
-  top: number;
-  left: number;
-  right: number;
-  bottom: number;
-  width: number;
-  height: number;
-  radius: number;
-  viewportWidth: number;
-  viewportHeight: number;
-};
-
 const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
-  const svgRef = React.useRef<SVGSVGElement | null>(null);
-  const [isButtonHovered, setIsButtonHovered] = React.useState(false);
-  const [overlayFrame, setOverlayFrame] = React.useState<OverlayFrame | null>(
-    null,
-  );
-
-  React.useEffect(() => {
-    const updateOverlayFrame = () => {
-      if (!svgRef.current) return;
-
-      const rect = svgRef.current.getBoundingClientRect();
-      const radius = (Math.min(rect.width, rect.height) * 64) / 1000;
-      setOverlayFrame({
-        top: Math.max(rect.top, 0),
-        left: Math.max(rect.left, 0),
-        right: Math.max(window.innerWidth - rect.right, 0),
-        bottom: Math.max(window.innerHeight - rect.bottom, 0),
-        width: rect.width,
-        height: rect.height,
-        radius,
-        viewportWidth: window.innerWidth,
-        viewportHeight: window.innerHeight,
-      });
-    };
-
-    updateOverlayFrame();
-    window.addEventListener("resize", updateOverlayFrame);
-    window.addEventListener("scroll", updateOverlayFrame, true);
-
-    return () => {
-      window.removeEventListener("resize", updateOverlayFrame);
-      window.removeEventListener("scroll", updateOverlayFrame, true);
-    };
-  }, []);
-
   return (
     <>
-      {overlayFrame && (
-        <div
-          className="pointer-events-none fixed inset-0 z-[999] transition-[opacity,backdrop-filter,background-color] duration-400 ease-out"
-          style={{
-            opacity: isButtonHovered ? 1 : 0,
-            backgroundColor: isButtonHovered
-              ? "rgb(0 0 0 / 0.15)"
-              : "rgb(0 0 0 / 0)",
-            backdropFilter: isButtonHovered ? "blur(4px)" : "blur(0px)",
-            WebkitBackdropFilter: isButtonHovered ? "blur(4px)" : "blur(0px)",
-            clipPath: `path('M0 0 H${overlayFrame.viewportWidth} V${overlayFrame.viewportHeight} H0 Z M${overlayFrame.left + overlayFrame.radius} ${overlayFrame.top} A${overlayFrame.radius} ${overlayFrame.radius} 0 0 0 ${overlayFrame.left} ${overlayFrame.top + overlayFrame.radius} V${overlayFrame.top + overlayFrame.height - overlayFrame.radius} A${overlayFrame.radius} ${overlayFrame.radius} 0 0 0 ${overlayFrame.left + overlayFrame.radius} ${overlayFrame.top + overlayFrame.height} H${overlayFrame.left + overlayFrame.width - overlayFrame.radius} A${overlayFrame.radius} ${overlayFrame.radius} 0 0 0 ${overlayFrame.left + overlayFrame.width} ${overlayFrame.top + overlayFrame.height - overlayFrame.radius} V${overlayFrame.top + overlayFrame.radius} A${overlayFrame.radius} ${overlayFrame.radius} 0 0 0 ${overlayFrame.left + overlayFrame.width - overlayFrame.radius} ${overlayFrame.top} H${overlayFrame.left + overlayFrame.radius} Z')`,
-          }}
-        />
-      )}
       <svg
-        ref={svgRef}
         width={1000}
         height={1000}
         viewBox="0 0 1000 1000"
@@ -98,8 +36,6 @@ const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
           />
           <g
             className="group/button cursor-pointer"
-            onMouseEnter={() => setIsButtonHovered(true)}
-            onMouseLeave={() => setIsButtonHovered(false)}
             onClick={() =>
               window.open("https://github.com/sherucon/brew-lsd", "_blank")
             }

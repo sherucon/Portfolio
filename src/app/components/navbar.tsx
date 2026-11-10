@@ -2,19 +2,45 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const tabs: { label: string; href: string; dot?: boolean }[] = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Work", href: "/work", dot: true },
+const tabs: { label: string; href: string; id: string; dot?: boolean }[] = [
+  { label: "Home", href: "/#home", id: "home" },
+  { label: "Work", href: "/#work", id: "work", dot: true },
+  { label: "About", href: "/#about", id: "about" },
   //{ label: 'Contact', href: '/contact' },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
+  const [activeSection, setActiveSection] = useState("home");
+
+  useEffect(() => {
+    if (pathname !== "/") return;
+
+    const update = () => {
+      const marker = window.scrollY + 130;
+      let current = "home";
+      let currentTop = -1;
+      for (const tab of tabs) {
+        const el = document.getElementById(tab.id);
+        if (el && el.offsetTop <= marker && el.offsetTop > currentTop) {
+          current = tab.id;
+          currentTop = el.offsetTop;
+        }
+      }
+      setActiveSection(current);
+    };
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, [pathname]);
 
   const activeIndex = Math.max(
-    tabs.findIndex((t) => t.href === pathname),
+    tabs.findIndex((t) =>
+      pathname === "/" ? t.id === activeSection : t.id === pathname.slice(1),
+    ),
     0,
   );
 
@@ -38,7 +64,7 @@ export default function Navbar() {
 
         {/* Tab links */}
         {tabs.map((tab) => {
-          const isActive = tab.href === pathname;
+          const isActive = tab.id === tabs[activeIndex].id;
           return (
             <Link
               key={tab.href}

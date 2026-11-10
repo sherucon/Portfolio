@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 /* Streaming caret blink (used by the paraNOyar work card) */
 @keyframes caretBlink {
   0%,
@@ -68,6 +78,11 @@
 
 .helvetica {
   font-family: Helvetica;
+}
+
+.cactus {
+  font-family: var(--font-cactus), Georgia, serif;
+  font-weight: 400;
 }
 
 :root {

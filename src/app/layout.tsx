@@ -4,6 +4,14 @@ import Cursor from "./components/cursor";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
+import { Cactus_Classical_Serif } from "next/font/google";
+
+const cactus = Cactus_Classical_Serif({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-cactus",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Shreyansh Singh",
@@ -30,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={cactus.variable}>
       <body>
         <Cursor />
         <Navbar />
