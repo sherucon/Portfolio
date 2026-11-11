@@ -24,11 +24,15 @@ export default function DocSearch() {
 
   // Cursor blink
   useEffect(() => {
+    if (window.matchMedia("(max-width: 767.98px)").matches) return;
+
     const id = setInterval(() => setShowCursor((v) => !v), 530);
     return () => clearInterval(id);
   }, []);
 
   useEffect(() => {
+    if (window.matchMedia("(max-width: 767.98px)").matches) return;
+
     const current = PHRASES[phraseIndex];
 
     if (!isDeleting && charIndex < current.length) {

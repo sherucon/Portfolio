@@ -654,3 +654,12 @@ body {
     bottom: 15px;
   }
 }
+
+/* Mobile: keep SVG artwork and its transitions static */
+@media (max-width: 767.98px) {
+  svg,
+  svg * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

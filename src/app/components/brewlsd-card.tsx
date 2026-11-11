@@ -4,6 +4,16 @@ import * as React from "react";
 import { SVGProps } from "react";
 
 const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
+  const [isMobile, setIsMobile] = React.useState<boolean | null>(null);
+
+  React.useEffect(() => {
+    const query = window.matchMedia("(max-width: 767.98px)");
+    const update = () => setIsMobile(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
   return (
     <>
       <svg
@@ -77,14 +87,16 @@ const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
             d="M750 750H1069V1069H750V750Z"
             fill="url(#pattern1_2112_67)"
           >
-            <animateTransform
-              attributeName="transform"
-              type="rotate"
-              from="0 909.5 909.5"
-              to="360 909.5 909.5"
-              dur="15s"
-              repeatCount="indefinite"
-            />
+            {isMobile === false && (
+              <animateTransform
+                attributeName="transform"
+                type="rotate"
+                from="0 909.5 909.5"
+                to="360 909.5 909.5"
+                dur="15s"
+                repeatCount="indefinite"
+              />
+            )}
           </path>
         </g>
         <defs>

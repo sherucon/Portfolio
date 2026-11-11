@@ -133,6 +133,8 @@ export default function PotenadAnim() {
   }, [animate]);
 
   useEffect(() => {
+    if (window.matchMedia("(max-width: 767.98px)").matches) return;
+
     const timeout = setTimeout(runLoop, 100);
     return () => {
       clearTimeout(timeout);
