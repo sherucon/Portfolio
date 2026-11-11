@@ -147,7 +147,7 @@ export default function About({ stacked = false }: { stacked?: boolean }) {
               <XIcon />
             </Link>
             <Link
-              href="mailto:singhshreyansh288@gmail.com"
+              href="mailto:sh3rucon@gmail.com"
               target="_blank"
               className="text-[#747474] hover:text-black transition-colors duration-200"
               aria-label="Mail"

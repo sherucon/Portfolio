@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import MailIcon from "./mail-icon";
 import Spacer from "./spacer";
 
-const EMAIL = "singhshreyansh288@gmail.com";
+const EMAIL = "sh3rucon@gmail.com";
 
 const RAINBOW = [
   "#5EBD3E",
@@ -370,14 +371,9 @@ export default function Page() {
                 <a
                   href={`mailto:${EMAIL}`}
                   aria-label="Email me"
-                  className="size-7 shrink-0"
+                  className="inline-flex size-7 shrink-0 items-center justify-center text-[#747474] transition-colors duration-200 hover:text-black"
                 >
-                  <img
-                    src="/figma/envelope.svg"
-                    alt=""
-                    width={28}
-                    height={28}
-                  />
+                  <MailIcon />
                 </a>
                 <div className="flex h-[38px] flex-1 items-center rounded-[19px] border border-[#c7c7ce] bg-white pr-1 pl-3">
                   <input

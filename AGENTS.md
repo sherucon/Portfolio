@@ -474,9 +474,6 @@ Rules:
 
 `public/figma/` holds small Figma-exported assets used through `<img>`:
 
-- `imessage-tail-incoming.svg`
-- `imessage-tail-outgoing.svg`
-- `envelope.svg`
 - `send.svg`
 
 `public/music/` holds transport icons used through `<img>`:

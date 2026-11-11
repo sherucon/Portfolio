@@ -21,6 +21,31 @@ const HEADERS = [
   "User agent",
 ];
 
+/** Where new-lead notifications are sent. */
+const NOTIFY_EMAIL = "singhshreyansh288@gmail.com";
+
+function sendNewLeadEmail(values) {
+  try {
+    MailApp.sendEmail({
+      to: NOTIFY_EMAIL,
+      subject: `New portfolio lead: ${values[2] || "unknown"}`,
+      body: [
+        `Name: ${values[2] || "-"}`,
+        `Topic: ${values[3] || "-"}`,
+        `Phone: ${values[4] || "-"}`,
+        `Email: ${values[5] || "-"}`,
+        `Anything else: ${values[6] || "-"}`,
+        `Status: ${values[7] || "-"}`,
+        `Session: ${values[1] || "-"}`,
+        `Created: ${values[0]}`,
+      ].join("\n"),
+    });
+  } catch (error) {
+    // A failed email must not fail the sheet write.
+    console.error("Lead email failed", error);
+  }
+}
+
 function doPost(e) {
   const lock = LockService.getScriptLock();
   lock.waitLock(15000);
@@ -53,6 +78,7 @@ function doPost(e) {
     const row = findRow(sheet, sessionId);
     if (row === -1) {
       sheet.appendRow(rowValues);
+      sendNewLeadEmail(rowValues);
     } else {
       rowValues[0] = sheet.getRange(row, 1).getValue() || now;
       sheet.getRange(row, 1, 1, rowValues.length).setValues([rowValues]);
