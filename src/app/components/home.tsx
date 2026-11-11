@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Spacer from "./spacer";
 
 const EMAIL = "singhshreyansh288@gmail.com";
@@ -15,13 +15,240 @@ const RAINBOW = [
   "#009CDF",
 ];
 
+type Sender = "me" | "them";
+type Field = "name" | "topic" | "phone" | "email" | "notes";
+type Answers = Record<Field, string>;
+
+type ChatMessage = {
+  id: number;
+  from: Sender;
+  text: string;
+  delay?: number;
+};
+
+const INITIAL_MESSAGES: ChatMessage[] = [
+  {
+    id: 1,
+    from: "them",
+    text: "want to work together? or just wanna chat? send me a msg here, yes here",
+    delay: 0.15,
+  },
+  { id: 2, from: "me", text: "That is alright, bet", delay: 0.95 },
+  { id: 3, from: "them", text: "What’s your name?", delay: 1.75 },
+];
+
+const EMPTY_ANSWERS: Answers = {
+  name: "",
+  topic: "",
+  phone: "",
+  email: "",
+  notes: "",
+};
+
+const STEPS: { field: Field; replies: string[] }[] = [
+  { field: "name", replies: ["what did u wanna talk about?"] },
+  { field: "topic", replies: ["ahh i see", "whats your phone number?"] },
+  { field: "phone", replies: ["and what about your email?"] },
+  { field: "email", replies: ["right on", "anything else?"] },
+  { field: "notes", replies: ["i'll hit u back asap", "talk soon"] },
+];
+
+type ChatBubbleProps = {
+  from: Sender;
+  delay?: number;
+  visible?: boolean;
+  delivered?: boolean;
+  firstInRun?: boolean;
+  lastInRun?: boolean;
+  children: React.ReactNode;
+};
+
+/* SwiftUI BubbleShape tail, cropped to the part outside the bubble body. */
+function BubbleTail({ outgoing }: { outgoing: boolean }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 22 12"
+      className={`pointer-events-none absolute bottom-[-1px] h-3 w-[22px] ${
+        outgoing ? "right-[-6px] -scale-x-100" : "left-[-6px]"
+      }`}
+    >
+      <path
+        d="M6 1C6 10 1 11 1 11L0 11C5 12 9 10 13 7C16 11 21 11 21 11Z"
+        fill={outgoing ? "#0070e8" : "#e4e4e9"}
+      />
+    </svg>
+  );
+}
+
+function ChatBubble({
+  from,
+  delay = 0,
+  visible = true,
+  delivered = false,
+  firstInRun = true,
+  lastInRun = true,
+  children,
+}: ChatBubbleProps) {
+  const outgoing = from === "me";
+
+  return (
+    <div
+      className={`imessage-bubble flex flex-col ${
+        outgoing ? "items-end" : "items-start"
+      } ${firstInRun ? "mt-2" : "mt-0.5"} first:mt-0 ${
+        visible ? "is-visible" : ""
+      }`}
+      style={delay ? { animationDelay: `${delay}s` } : undefined}
+    >
+      <div
+        className={`imessage-bubble__body relative w-fit max-w-[302px] rounded-[19px] px-[14px] text-base leading-[21px] ${
+          outgoing
+            ? "bg-[#0070e8] py-[12px] text-white"
+            : "bg-[#e4e4e9] py-[11px]"
+        }`}
+        style={{
+          borderTopRightRadius: outgoing && !firstInRun ? 6 : undefined,
+          borderBottomRightRadius: outgoing ? (lastInRun ? 0 : 6) : undefined,
+          borderTopLeftRadius: !outgoing && !firstInRun ? 6 : undefined,
+          borderBottomLeftRadius: !outgoing ? (lastInRun ? 0 : 6) : undefined,
+        }}
+      >
+        {lastInRun && <BubbleTail outgoing={outgoing} />}
+        <p className="break-words">{children}</p>
+      </div>
+      {delivered && (
+        <p className="mr-[3px] mt-1 text-[11px] font-medium leading-[14.3px] text-[#6e6e73]">
+          Delivered
+        </p>
+      )}
+    </div>
+  );
+}
+
 export default function Page() {
   const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
+  const [answers, setAnswers] = useState<Answers>(EMPTY_ANSWERS);
+  const [step, setStep] = useState(0);
+  const [busy, setBusy] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [sendError, setSendError] = useState(false);
+  const [chatStarted, setChatStarted] = useState(false);
+  const [sessionId] = useState(() =>
+    typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+  );
+  const chatRef = useRef<HTMLElement>(null);
+  const messagesRef = useRef<HTMLDivElement>(null);
+  const nextIdRef = useRef(INITIAL_MESSAGES.length + 1);
+  const timersRef = useRef<number[]>([]);
+
+  useEffect(() => {
+    const node = chatRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setChatStarted(true);
+        observer.disconnect();
+      },
+      { threshold: 0.2 },
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const node = messagesRef.current;
+    if (node) node.scrollTop = node.scrollHeight;
+  }, [messages.length]);
+
+  useEffect(() => {
+    const timers = timersRef.current;
+    return () => timers.forEach((timer) => window.clearTimeout(timer));
+  }, []);
+
+  const scheduleReplies = (replies: string[]) => {
+    replies.forEach((text, index) => {
+      const timer = window.setTimeout(() => {
+        setMessages((current) => [
+          ...current,
+          { id: nextIdRef.current++, from: "them", text },
+        ]);
+      }, 650 + index * 700);
+      timersRef.current.push(timer);
+    });
+
+    const idleTimer = window.setTimeout(
+      () => setBusy(false),
+      650 + Math.max(0, replies.length - 1) * 700 + 250,
+    );
+    timersRef.current.push(idleTimer);
+  };
+
+  const saveLead = async (nextAnswers: Answers, isComplete: boolean) => {
+    try {
+      const response = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId,
+          ...nextAnswers,
+          complete: isComplete,
+        }),
+      });
+      const result = await response.json().catch(() => null);
+      return response.ok && result?.ok === true;
+    } catch {
+      return false;
+    }
+  };
+
+  const finished = step >= STEPS.length;
 
   const sendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    window.location.href = `mailto:${EMAIL}?body=${encodeURIComponent(message)}`;
+    if (busy || finished) return;
+
+    const text = message.trim();
+    const currentStep = STEPS[step];
+    if (!text || !currentStep) return;
+
+    const updatedAnswers = { ...answers, [currentStep.field]: text };
+    const isFinal = step === STEPS.length - 1;
+
+    setAnswers(updatedAnswers);
+    setMessage("");
+    setBusy(true);
+    setMessages((current) => [
+      ...current,
+      { id: nextIdRef.current++, from: "me", text },
+    ]);
+
+    if (isFinal) {
+      setSaving(true);
+      void saveLead(updatedAnswers, true).then((ok) => {
+        setSaving(false);
+        if (ok) setSent(true);
+        else setSendError(true);
+      });
+    } else {
+      void saveLead(updatedAnswers, false);
+    }
+
+    scheduleReplies(currentStep.replies);
+    setStep(step + 1);
   };
+
+  const lastOutgoingIndex = messages.reduce(
+    (last, current, index) => (current.from === "me" ? index : last),
+    -1,
+  );
 
   return (
     <>
@@ -104,54 +331,41 @@ export default function Page() {
             </section>
 
             {/* Contact — iMessage conversation */}
-            <section className="relative h-[600px] overflow-hidden rounded-3xl bg-[#f7f7f9] text-[#111]">
+            <section
+              ref={chatRef}
+              aria-label="iMessage conversation"
+              className="flex h-[600px] flex-col overflow-hidden rounded-3xl bg-[#f7f7f9] text-[#111]"
+            >
+              <div
+                ref={messagesRef}
+                aria-live="polite"
+                className="flex flex-1 flex-col overflow-y-auto px-5 py-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              >
+                {messages.map((chatMessage, index) => {
+                  const previous = messages[index - 1];
+                  const next = messages[index + 1];
 
-
-              <div className="relative ml-5 mt-5 w-[302px] max-w-[calc(100%-66px)] rounded-[19px] rounded-bl-[6px] bg-[#e4e4e9] px-[14px] py-[11px]">
-                <p className="text-base leading-[21px]">
-                  want to work together? or just wanna chat? send me a msg
-                  here, yes here
-                </p>
-                <img
-                  src="/figma/imessage-tail-incoming.svg"
-                  alt=""
-                  width={14}
-                  height={14}
-                  className="absolute bottom-0 -left-[7px]"
-                />
-              </div>
-
-              <div className="relative ml-auto mr-5 mt-5 w-fit max-w-[calc(100%-40px)] rounded-[19px] rounded-br-[6px] bg-[#0070e8] px-[14px] py-[12px] text-white">
-                <p className="text-base leading-[21px]">alr bet</p>
-                <img
-                  src="/figma/imessage-tail-outgoing.svg"
-                  alt=""
-                  width={14}
-                  height={14}
-                  className="absolute -right-[6px] bottom-0"
-                />
-              </div>
-
-              <p className="mt-2 pr-[23px] text-right text-[11px] font-medium leading-[14.3px] text-[#6e6e73]">
-                Delivered
-              </p>
-
-              <div className="relative ml-5 mt-[50px] w-fit max-w-[calc(100%-66px)] rounded-[19px] rounded-bl-[6px] bg-[#e4e4e9] px-[14px] py-[11px]">
-                <p className="whitespace-nowrap text-base leading-[21px]">
-                  whats your name
-                </p>
-                <img
-                  src="/figma/imessage-tail-incoming.svg"
-                  alt=""
-                  width={14}
-                  height={14}
-                  className="absolute bottom-0 -left-[7px]"
-                />
+                  return (
+                    <ChatBubble
+                      key={chatMessage.id}
+                      from={chatMessage.from}
+                      delay={chatMessage.delay}
+                      visible={chatMessage.delay === undefined || chatStarted}
+                      delivered={index === lastOutgoingIndex}
+                      firstInRun={
+                        !previous || previous.from !== chatMessage.from
+                      }
+                      lastInRun={!next || next.from !== chatMessage.from}
+                    >
+                      {chatMessage.text}
+                    </ChatBubble>
+                  );
+                })}
               </div>
 
               <form
                 onSubmit={sendMessage}
-                className="absolute inset-x-0 bottom-0 flex h-[65px] items-center gap-[10px] px-[17px]"
+                className="flex h-[65px] shrink-0 items-center gap-[10px] px-[17px]"
               >
                 <a
                   href={`mailto:${EMAIL}`}
@@ -169,21 +383,74 @@ export default function Page() {
                   <input
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    placeholder="iMessage"
-                    aria-label="Message"
-                    className="min-w-0 flex-1 bg-transparent text-base leading-[21px] text-[#111] outline-none placeholder:text-[#6e6e73]"
+                    placeholder={
+                      sent
+                        ? "your message was sent"
+                        : sendError
+                          ? "couldn't send, email me"
+                          : saving
+                            ? "sending..."
+                            : "iMessage"
+                    }
+                    aria-label={sent ? "Message sent" : "Message"}
+                    disabled={finished}
+                    className="min-w-0 flex-1 bg-transparent text-base leading-[21px] text-[#111] outline-none placeholder:text-[#6e6e73] disabled:cursor-default"
                   />
                   <button
                     type="submit"
-                    aria-label="Send message"
-                    className="size-[30px] shrink-0"
+                    aria-label={
+                      sent
+                        ? "Message sent"
+                        : sendError
+                          ? "Message failed to send"
+                          : "Send message"
+                    }
+                    disabled={busy || finished}
+                    className={`size-[30px] shrink-0 rounded-full transition-opacity ${
+                      busy && !sent && !sendError ? "opacity-40" : ""
+                    }`}
                   >
-                    <img
-                      src="/figma/send.svg"
-                      alt=""
-                      width={30}
-                      height={30}
-                    />
+                    {sent ? (
+                      <svg
+                        width={30}
+                        height={30}
+                        viewBox="0 0 30 30"
+                        aria-hidden="true"
+                      >
+                        <circle cx="15" cy="15" r="15" fill="#34C759" />
+                        <path
+                          d="M9 15.5l4 4 8-9"
+                          fill="none"
+                          stroke="#fff"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    ) : sendError ? (
+                      <svg
+                        width={30}
+                        height={30}
+                        viewBox="0 0 30 30"
+                        aria-hidden="true"
+                      >
+                        <circle cx="15" cy="15" r="15" fill="#FF3B30" />
+                        <path
+                          d="M15 8v9"
+                          stroke="#fff"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                        />
+                        <circle cx="15" cy="21.5" r="1.6" fill="#fff" />
+                      </svg>
+                    ) : (
+                      <img
+                        src="/figma/send.svg"
+                        alt=""
+                        width={30}
+                        height={30}
+                      />
+                    )}
                   </button>
                 </div>
               </form>
