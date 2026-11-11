@@ -9,15 +9,14 @@ import Gallery from "./gallery";
 import GhStreak from "./gh-streak";
 import MediumRSS from "./medium-rss";
 import LosIll from "./losilluminados";
+import MusicPlayer from "./music-player";
 
 export default function About({ stacked = false }: { stacked?: boolean }) {
   return (
     <div className="mx-5 my-0 md:mx-8 lg:mx-16 xl:mx-50">
       <link rel="preconnect" href="https://portfolio.sherucon.me" />
-      <link
-        rel="preconnect"
-        href="https://embed.music.apple.com/us/playlist/i-love/pl.u-06oxpqztYrEXE5b?theme=light"
-      />
+      <link rel="preconnect" href="https://audio-ssl.itunes.apple.com" />
+      <link rel="preconnect" href="https://is1-ssl.mzstatic.com" />
       {!stacked && <Spacer />}
 
       <div
@@ -64,10 +63,7 @@ export default function About({ stacked = false }: { stacked?: boolean }) {
           <br />
 
           <p className="text-lg">
-            I was born and raised in Faridabad, India, back when not every house
-            had a computer. My father brought one home from work, the year I was
-            born. There was never much to do outside, except the usual grass
-            touching, so I grew closer to the machine.
+            I was born and raised in Faridabad, India, back when not every household had a computer. My father brought one home from work the year I was born. Growing up, I spent plenty of time outdoors, but there was always something fascinating about having a machine at home that opened doors to other dimensions.
           </p>
 
           <br />
@@ -81,15 +77,8 @@ export default function About({ stacked = false }: { stacked?: boolean }) {
               Resident Evil 4 (2005) ⤷
             </a>{" "}
             on our computer, and I&apos;d be shit scared around every corner.
-            I&apos;m currently playing{" "}
-            <a
-              href="https://en.wikipedia.org/wiki/Uncharted_3:_Drake's_Deception"
-              className="underline text-black graphik-medium"
-            >
-              Uncharted 3 ⤷
-            </a>
-            . The internet was a privilege I had from a very young age, and ofc
-            I used it to play games most of my childhood.
+            The internet was a privilege I had from a very young age.
+            There was always something new to find, and I spent a good chunk of my childhood online.
           </p>
 
           <br />
@@ -179,31 +168,25 @@ export default function About({ stacked = false }: { stacked?: boolean }) {
 
         {/* Right panel — its own independent 2-column grid, so squares stay squares */}
         <div className="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-4">
-          <div className="aspect-square bg-[#f7f7f9] rounded-3xl overflow-hidden cursor-touch">
+          <div className="aspect-square bg-[#f7f7f9] rounded-3xl overflow-hidden">
             <Gallery />
           </div>
 
-          <div className="aspect-square bg-[#f7f7f9] rounded-3xl overflow-hidden cursor-touch">
+          <div className="aspect-square bg-[#f7f7f9] rounded-3xl overflow-hidden">
             <LosIll />
           </div>
 
-          <div className="aspect-square bg-[#f7f7f9] rounded-3xl overflow-hidden cursor-touch">
+          <div className="aspect-square bg-[#f7f7f9] rounded-3xl overflow-hidden">
             <GhStreak />
           </div>
 
-          <div className="aspect-square bg-[#f7f7f9] rounded-3xl overflow-hidden cursor-touch">
+          <div className="aspect-square bg-[#f7f7f9] rounded-3xl overflow-hidden">
             <MediumRSS />
           </div>
 
           {/* Music player — spans both columns of the right panel */}
-          <div className="col-span-2 bg-[#f7f7f9] rounded-3xl overflow-hidden h-[450px] cursor-touch">
-            <iframe
-              title="AppleMusic"
-              className="w-full h-full border-0 rounded-3xl overflow-hidden cursor-touch"
-              src="https://embed.music.apple.com/us/playlist/i-love/pl.u-06oxpqztYrEXE5b?theme=light"
-              allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"
-              sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"
-            />
+          <div className="col-span-2">
+            <MusicPlayer />
           </div>
         </div>
       </div>

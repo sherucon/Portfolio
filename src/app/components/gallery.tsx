@@ -134,7 +134,7 @@ export default function Gallery() {
 
   return (
     <div
-      className="group relative w-full h-full cursor-touch overflow-hidden"
+      className="group relative w-full h-full overflow-hidden"
       onClick={() => {
         next();
         resetTimer();
@@ -173,7 +173,7 @@ export default function Gallery() {
       >
         {/* Apple Photos badge — top-right */}
         <div
-          className="absolute top-3 right-3 cursor-touch"
+          className="absolute top-3 right-3"
           style={{ width: 64, height: 64, pointerEvents: "auto" }}
           onClick={(e) => {
             e.stopPropagation();
