@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import SvgCardFrame from "./svg-card-frame";
 
 const SVGComponent = ({
   className,
@@ -28,16 +29,17 @@ const SVGComponent = ({
   }, []);
 
   return (
-    <svg
-      ref={hostRef}
-      width={1000}
-      height={1000}
-      viewBox="0 0 1000 1000"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={["group/card", className].filter(Boolean).join(" ")}
-      {...props}
-    >
+    <SvgCardFrame className={className}>
+      <svg
+        ref={hostRef}
+        width={1000}
+        height={1000}
+        viewBox="0 0 1000 1000"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="group/card"
+        {...props}
+      >
       <g clipPath="url(#clip0_archive_redesign)">
         <rect width={1000} height={1000} rx={64} fill="#F7F7F9" />
         <text
@@ -127,7 +129,8 @@ const SVGComponent = ({
           <rect width={1000} height={1000} rx={64} fill="white" />
         </clipPath>
       </defs>
-    </svg>
+      </svg>
+    </SvgCardFrame>
   );
 };
 export default SVGComponent;

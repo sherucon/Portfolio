@@ -70,6 +70,8 @@ function BubbleTail({ outgoing }: { outgoing: boolean }) {
     <svg
       aria-hidden="true"
       viewBox="0 0 22 12"
+      width={22}
+      height={12}
       className={`pointer-events-none absolute bottom-[-1px] h-3 w-[22px] ${
         outgoing ? "right-[-6px] -scale-x-100" : "left-[-6px]"
       }`}

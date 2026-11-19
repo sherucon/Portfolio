@@ -3,6 +3,7 @@
 import * as React from "react";
 import { SVGProps } from "react";
 import PotenadAnim from "./potenad-anim";
+import SvgCardFrame from "./svg-card-frame";
 
 const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
@@ -31,16 +32,14 @@ const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
   };
 
   return (
-    <>
+    <SvgCardFrame className={className}>
       <svg
         width={1000}
         height={1000}
         viewBox="0 0 1000 1000"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className={["group/card overflow-visible", className]
-          .filter(Boolean)
-          .join(" ")}
+        className="group/card"
         {...props}
       >
         <defs>
@@ -141,7 +140,7 @@ const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
           </div>
         </foreignObject>
       </svg>
-    </>
+    </SvgCardFrame>
   );
 };
 export default SVGComponent;

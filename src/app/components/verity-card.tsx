@@ -3,10 +3,11 @@
 import * as React from "react";
 import { SVGProps } from "react";
 import DocSearch from "./docsearch";
+import SvgCardFrame from "./svg-card-frame";
 
 const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
   return (
-    <>
+    <SvgCardFrame className={className}>
       <svg
         width={1000}
         height={1000}
@@ -14,7 +15,7 @@ const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
-        className={["group/card", className].filter(Boolean).join(" ")}
+        className="group/card"
         {...props}
       >
         <g clipPath="url(#clip0_2137_78)">
@@ -117,7 +118,7 @@ const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
           <DocSearch />
         </foreignObject>
       </svg>
-    </>
+    </SvgCardFrame>
   );
 };
 export default SVGComponent;
