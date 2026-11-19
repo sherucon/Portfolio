@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const MESSAGE_TEXT = "Hey whatsup! This is confidential";
 const URL_TEXT = "https://potenad.vercel.app/#H4sIAAAAAAA....";
@@ -44,112 +44,21 @@ type Stage =
   | "decoding"
   | "resetting";
 
-export default function PotenadAnim() {
-  const [stage, setStage] = useState<Stage>("idle-message");
-  // 0 = Frame6 position/colors, 1 = Frame9, 2 = Frame10
-  const [rawT, setRawT] = useState(0);
+type Visuals = {
+  finalY: number;
+  scale: number;
+  blur: number;
+  bgColor: string;
+  bdrColor: string;
+  shadow: string;
+  msgOpacity: number;
+  msgSlide: number;
+  urlOpacity: number;
+  urlSlide: number;
+  shimmerActive: boolean;
+};
 
-  const rafRef = useRef<number | null>(null);
-  const startRef = useRef<number | null>(null);
-  const stageRef = useRef<Stage>("idle-message" as Stage);
-  const rawTRef = useRef(0);
-
-  const DURATION = 1000;
-  const WAIT_DURATION = 1000;
-
-  const stopRaf = () => {
-    if (rafRef.current !== null) {
-      cancelAnimationFrame(rafRef.current);
-      rafRef.current = null;
-    }
-  };
-
-  const animate = useCallback(
-    (fromT: number, toT: number, onDone: () => void) => {
-      stopRaf();
-      startRef.current = null;
-
-      function tick(ts: number) {
-        if (!startRef.current) startRef.current = ts;
-        const elapsed = ts - startRef.current;
-        const progress = Math.min(elapsed / DURATION, 1);
-        const eased = springEase(progress);
-        const currentT = lerp(fromT, toT, eased);
-        rawTRef.current = currentT;
-        setRawT(currentT);
-
-        if (progress < 1) {
-          rafRef.current = requestAnimationFrame(tick);
-        } else {
-          rawTRef.current = toT;
-          setRawT(toT);
-          onDone();
-        }
-      }
-
-      rafRef.current = requestAnimationFrame(tick);
-    },
-    [],
-  );
-
-  const runLoop = useCallback(() => {
-    // idle at first state before encoding
-    stageRef.current = "idle-message";
-    setStage("idle-message");
-
-    setTimeout(() => {
-      // Phase 1: encode (Frame6 → Frame9)
-      stageRef.current = "encoding";
-      setStage("encoding");
-
-      animate(0, 1, () => {
-        // Rest at URL
-        stageRef.current = "idle-url";
-        setStage("idle-url");
-
-        setTimeout(() => {
-          // Phase 2: decode (Frame9 → Frame10)
-          stageRef.current = "decoding";
-          setStage("decoding");
-
-          animate(1, 2, () => {
-            // Rest at decoded state
-            setTimeout(() => {
-              // Phase 3: smoothly return bubble to Frame6 position (red → red)
-              stageRef.current = "resetting";
-              setStage("resetting");
-
-              animate(2, 3, () => {
-                // Snap t back to 0 (same visual position) then loop
-                rawTRef.current = 0;
-                setRawT(0);
-                setTimeout(runLoop, 40);
-              });
-            }, WAIT_DURATION);
-          });
-        }, WAIT_DURATION);
-      });
-    }, WAIT_DURATION);
-  }, [animate]);
-
-  useEffect(() => {
-    if (window.matchMedia("(max-width: 767.98px)").matches) return;
-
-    const timeout = setTimeout(runLoop, 100);
-    return () => {
-      clearTimeout(timeout);
-      stopRaf();
-    };
-  }, [runLoop]);
-
-  // ── Derived visual values ──────────────────────────────────────────────────
-
-  const t = rawT;
-  // t segments:
-  //   0→1: Frame6 (red, y=60)  → Frame9 (green, y=331)  — encode
-  //   1→2: Frame9 (green, y=331) → Frame10 (red, y=601) — decode
-  //   2→3: Frame10 (red, y=601) → Frame6 (red, y=60)    — loop reset
-
+function getVisuals(t: number, stage: Stage): Visuals {
   // Local progress within whichever segment we're in (always 0→1)
   const segT = t <= 1 ? t : t <= 2 ? t - 1 : t - 2;
 
@@ -165,7 +74,7 @@ export default function PotenadAnim() {
   const arcOff = Math.sin(segT * Math.PI) * -6;
 
   // Color: red→yellow→green→red
-  const colorT = t <= 1 ? t : t <= 2 ? 2 - t : 0; // used for shadows to pop the middle bubble
+  const colorT = t <= 1 ? t : t <= 2 ? 2 - t : 0; // shadows pop the middle bubble
   const bgColor =
     t <= 1
       ? lerpRgb(RED_BG, YLW_BG, t)
@@ -184,13 +93,7 @@ export default function PotenadAnim() {
   const shadowAlpha = 0.12 + colorT * 0.12;
   const shadowY2 = 4 + colorT * 6;
   const shadowBlur = 12 + colorT * 16;
-  const shadowRgb =
-    t <= 1
-      ? lerpRgb(RED_BDR, YLW_BDR, t)
-      : t <= 2
-        ? lerpRgb(YLW_BDR, GRN_BDR, t - 1)
-        : lerpRgb(GRN_BDR, RED_BDR, t - 2);
-  const shadow = `0 ${shadowY2}px ${shadowBlur}px ${shadowRgb.replace("rgb(", "rgba(").replace(")", `,${shadowAlpha})`)}`;
+  const shadow = `0 ${shadowY2}px ${shadowBlur}px ${bdrColor.replace("rgb(", "rgba(").replace(")", `,${shadowAlpha})`)}`;
 
   // Scale dip and blur — active on all three moving segments
   const isAnimating =
@@ -233,15 +136,219 @@ export default function PotenadAnim() {
         ? lerp(0, 18, Math.min((t - 1) / 0.6, 1))
         : 0;
 
-  // Shimmer only on encode/decode, not reset
-  const shimmerActive =
-    (stage === "encoding" || stage === "decoding") && segT > 0.1 && segT < 0.85;
-
   // Final Y: add arc offset only when animating
   const finalY = isAnimating ? bubbleY + arcOff : bubbleY;
 
+  return {
+    finalY,
+    scale,
+    blur,
+    bgColor,
+    bdrColor,
+    shadow,
+    msgOpacity,
+    msgSlide,
+    urlOpacity,
+    urlSlide,
+    shimmerActive:
+      (stage === "encoding" || stage === "decoding") &&
+      segT > 0.1 &&
+      segT < 0.85,
+  };
+}
+
+export default function PotenadAnim() {
+  const [stage, setStage] = useState<Stage>("idle-message");
+  const [shimmerActive, setShimmerActive] = useState(false);
+
+  const hostRef = useRef<HTMLDivElement>(null);
+  const bubbleRef = useRef<HTMLDivElement>(null);
+  const msgRef = useRef<HTMLParagraphElement>(null);
+  const urlRef = useRef<HTMLParagraphElement>(null);
+
+  const rafRef = useRef<number | null>(null);
+  const timeoutRef = useRef<number | null>(null);
+  const startRef = useRef<number | null>(null);
+  const stageRef = useRef<Stage>("idle-message");
+  const rawTRef = useRef(0);
+  const shimmerRef = useRef(false);
+
+  const DURATION = 1000;
+  const WAIT_DURATION = 1000;
+
+  const stopRaf = useCallback(() => {
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+  }, []);
+
+  const applyVisuals = useCallback((t: number) => {
+    const v = getVisuals(t, stageRef.current);
+    const bubble = bubbleRef.current;
+    if (bubble) {
+      bubble.style.transform = `translateY(${v.finalY}px) scale(${v.scale})`;
+      bubble.style.background = v.bgColor;
+      bubble.style.borderColor = v.bdrColor;
+      bubble.style.boxShadow = v.shadow;
+      bubble.style.filter = v.blur > 0.3 ? `blur(${v.blur}px)` : "none";
+    }
+
+    if (msgRef.current) {
+      msgRef.current.style.opacity = String(v.msgOpacity);
+      msgRef.current.style.transform = `translateY(-50%) translateX(${v.msgSlide}px)`;
+    }
+
+    if (urlRef.current) {
+      urlRef.current.style.opacity = String(v.urlOpacity);
+      urlRef.current.style.transform = `translateY(-50%) translateX(${v.urlSlide}px)`;
+    }
+
+    if (v.shimmerActive !== shimmerRef.current) {
+      shimmerRef.current = v.shimmerActive;
+      setShimmerActive(v.shimmerActive);
+    }
+  }, []);
+
+  const animate = useCallback(
+    (fromT: number, toT: number, onDone: () => void) => {
+      stopRaf();
+      startRef.current = null;
+
+      function tick(ts: number) {
+        if (!startRef.current) startRef.current = ts;
+        const elapsed = ts - startRef.current;
+        const progress = Math.min(elapsed / DURATION, 1);
+        const eased = springEase(progress);
+        const currentT = lerp(fromT, toT, eased);
+        rawTRef.current = currentT;
+        applyVisuals(currentT);
+
+        if (progress < 1) {
+          rafRef.current = requestAnimationFrame(tick);
+        } else {
+          rawTRef.current = toT;
+          applyVisuals(toT);
+          onDone();
+        }
+      }
+
+      rafRef.current = requestAnimationFrame(tick);
+    },
+    [applyVisuals, stopRaf],
+  );
+
+  const reset = useCallback(() => {
+    stopRaf();
+    if (timeoutRef.current !== null) {
+      window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    stageRef.current = "idle-message";
+    rawTRef.current = 0;
+    shimmerRef.current = false;
+    setStage("idle-message");
+    setShimmerActive(false);
+    applyVisuals(0);
+  }, [applyVisuals, stopRaf]);
+
+  const runLoop = useCallback(
+    function loop() {
+      // idle at first state before encoding
+      stageRef.current = "idle-message";
+      setStage("idle-message");
+
+      timeoutRef.current = window.setTimeout(() => {
+        // Phase 1: encode (Frame6 → Frame9)
+        stageRef.current = "encoding";
+        setStage("encoding");
+
+        animate(0, 1, () => {
+          // Rest at URL
+          stageRef.current = "idle-url";
+          setStage("idle-url");
+
+          timeoutRef.current = window.setTimeout(() => {
+            // Phase 2: decode (Frame9 → Frame10)
+            stageRef.current = "decoding";
+            setStage("decoding");
+
+            animate(1, 2, () => {
+              // Rest at decoded state
+              timeoutRef.current = window.setTimeout(() => {
+                // Phase 3: smoothly return bubble to Frame6 position (red → red)
+                stageRef.current = "resetting";
+                setStage("resetting");
+
+                animate(2, 3, () => {
+                  // Snap t back to 0 (same visual position) then loop
+                  rawTRef.current = 0;
+                  applyVisuals(0);
+                  timeoutRef.current = window.setTimeout(loop, 40);
+                });
+              }, WAIT_DURATION);
+            });
+          }, WAIT_DURATION);
+        });
+      }, WAIT_DURATION);
+    },
+    [animate, applyVisuals],
+  );
+
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+    if (window.matchMedia("(max-width: 767.98px)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let inView = false;
+    let running = false;
+
+    const start = () => {
+      if (running) return;
+      running = true;
+      reset();
+      timeoutRef.current = window.setTimeout(runLoop, 100);
+    };
+
+    const stop = () => {
+      if (!running) return;
+      running = false;
+      reset();
+    };
+
+    const sync = () => {
+      if (inView && document.visibilityState === "visible") start();
+      else stop();
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        inView = entry.isIntersecting;
+        sync();
+      },
+      { rootMargin: "200px" },
+    );
+
+    observer.observe(host);
+    document.addEventListener("visibilitychange", sync);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", sync);
+      stopRaf();
+      if (timeoutRef.current !== null) {
+        window.clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    };
+  }, [reset, runLoop, stopRaf]);
+
+  const v = getVisuals(rawTRef.current, stage);
+
   return (
     <div
+      ref={hostRef}
       className="relative w-full h-full overflow-hidden"
       style={{
         background: "#f7f7f9",
@@ -262,27 +369,28 @@ export default function PotenadAnim() {
 
       {/* ── Single morphing bubble ─────────────────────────────────────────── */}
       <div
+        ref={bubbleRef}
         style={{
           position: "absolute",
           left: 53,
-          top: finalY,
+          top: 0,
           width: 778,
           height: 151,
           borderRadius: 37,
-          background: bgColor,
-          border: `6px solid ${bdrColor}`,
-          boxShadow: shadow,
-          transform: `scale(${scale})`,
-          filter: blur > 0.3 ? `blur(${blur}px)` : "none",
+          background: v.bgColor,
+          border: `6px solid ${v.bdrColor}`,
+          boxShadow: v.shadow,
+          transform: `translateY(${v.finalY}px) scale(${v.scale})`,
+          filter: v.blur > 0.3 ? `blur(${v.blur}px)` : "none",
           transformOrigin: "center center",
-          willChange: "transform, filter, top",
+          willChange: "transform, filter",
           overflow: "hidden",
         }}
       >
         {/* Shimmer sweep */}
         {shimmerActive && (
           <div
-            key={stage + String(Math.round(segT * 10))}
+            key={stage}
             style={{
               position: "absolute",
               inset: 0,
@@ -298,12 +406,13 @@ export default function PotenadAnim() {
 
         {/* Message text */}
         <p
+          ref={msgRef}
           style={{
             position: "absolute",
             left: 169,
             top: "50%",
             margin: 0,
-            transform: `translateY(-50%) translateX(${msgSlide}px)`,
+            transform: `translateY(-50%) translateX(${v.msgSlide}px)`,
             fontFamily:
               "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif",
             fontSize: 32,
@@ -311,7 +420,7 @@ export default function PotenadAnim() {
             lineHeight: "normal",
             color: "#000",
             whiteSpace: "nowrap",
-            opacity: msgOpacity,
+            opacity: v.msgOpacity,
             pointerEvents: "none",
           }}
         >
@@ -320,12 +429,13 @@ export default function PotenadAnim() {
 
         {/* URL text */}
         <p
+          ref={urlRef}
           style={{
             position: "absolute",
             left: 84,
             top: "50%",
             margin: 0,
-            transform: `translateY(-50%) translateX(${urlSlide}px)`,
+            transform: `translateY(-50%) translateX(${v.urlSlide}px)`,
             fontFamily:
               "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif",
             fontSize: 32,
@@ -333,7 +443,7 @@ export default function PotenadAnim() {
             lineHeight: "normal",
             color: "#000",
             whiteSpace: "nowrap",
-            opacity: urlOpacity,
+            opacity: v.urlOpacity,
             pointerEvents: "none",
           }}
         >

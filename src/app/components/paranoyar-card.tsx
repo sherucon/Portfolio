@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 
 const SVGComponent = ({
@@ -36,11 +34,12 @@ const SVGComponent = ({
             stroke="#E0E0E2"
             strokeWidth={5}
           />
-          <g
+          <a
+            href="https://paranoyar.sherucon.me"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open Paranoyar"
             className="group/button cursor-pointer"
-            onClick={() =>
-              window.open("https://paranoyar.sherucon.me", "_blank")
-            }
           >
             <circle
               id="button"
@@ -65,7 +64,7 @@ const SVGComponent = ({
               strokeLinejoin="round"
               className="transition-colors duration-200 group-hover/button:stroke-[#000000]"
             />
-          </g>
+          </a>
           <g clipPath="url(#clip1_2001_2)">
             <path
               d="M539.862 207H403.31C384.456 207 369.172 222.28 369.172 241.129C369.172 259.978 384.456 275.258 403.31 275.258H539.862C558.716 275.258 574 259.978 574 241.129C574 222.28 558.716 207 539.862 207Z"

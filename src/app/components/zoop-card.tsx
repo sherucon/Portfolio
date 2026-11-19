@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 
 const SVGComponent = ({
@@ -36,9 +34,12 @@ const SVGComponent = ({
             stroke="#E0E0E2"
             strokeWidth={5}
           />
-          <g
+          <a
+            href="https://zoopchat.vercel.app"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open Zoop"
             className="group/button cursor-pointer"
-            onClick={() => window.open("https://zoopchat.vercel.app", "_blank")}
           >
             <circle
               id="button"
@@ -63,7 +64,7 @@ const SVGComponent = ({
               strokeLinejoin="round"
               className="transition-colors duration-200 group-hover/button:stroke-[#000000]"
             />
-          </g>
+          </a>
 
           <g className="transition-transform duration-500 ease-out group-hover/card:-translate-x-[38px] group-hover/card:-translate-y-[22px]">
             <g clipPath="url(#clip1_2011_5)">

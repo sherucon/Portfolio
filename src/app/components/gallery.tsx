@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import GalleryNavBar, { Category } from "./gallery-navbar";
-import { redirect } from "next/dist/server/api-utils";
 
 const IMAGES: Record<Category, string[]> = {
   nature: [
@@ -37,7 +36,6 @@ const FOLDER: Record<Category, string> = {
 };
 
 const BASE_URL = "https://portfolio.sherucon.me";
-const AUTOPLAY_MS = 4000;
 const FADE_MS = 600;
 
 function imgUrl(cat: Category, idx: number) {
@@ -52,6 +50,8 @@ interface Slot {
 export default function Gallery() {
   // FIX 2: initial visual, category state, and refs are all consistent
   const initialSrc = imgUrl("nature", 0);
+  const hostRef = useRef<HTMLDivElement>(null);
+  const [galleryInView, setGalleryInView] = useState(false);
 
   // Two permanently-rendered image slots — crossfade between them
   const [slotA, setSlotA] = useState<Slot>({ src: initialSrc, active: true });
@@ -60,21 +60,38 @@ export default function Gallery() {
 
   const [category, setCategory] = useState<Category>("nature");
   const [index, setIndex] = useState(0);
-  const [timerKey, setTimerKey] = useState(0);
-
-  const resetTimer = useCallback(() => setTimerKey((k) => k + 1), []);
+  const [ready, setReady] = useState(false);
 
   // Refs so callbacks always see fresh values without re-creating
   const categoryRef = useRef<Category>("nature");
   const indexRef = useRef(0);
 
-  // FIX 3: preload the next image in the sequence so crossfades are instant
+  // Nothing loads until the gallery is actually near the viewport.
   useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setGalleryInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "300px" },
+    );
+    observer.observe(host);
+    return () => observer.disconnect();
+  }, []);
+
+  // Preload the next image only after the first one is actually in view,
+  // so a below-the-fold gallery costs nothing on initial load.
+  useEffect(() => {
+    if (!galleryInView || !ready) return;
     const imgs = IMAGES[category];
     const nextIdx = (index + 1) % imgs.length;
     const img = new Image();
     img.src = imgUrl(category, nextIdx);
-  }, [category, index]);
+  }, [category, index, galleryInView, ready]);
 
   const crossfadeTo = useCallback((newSrc: string) => {
     // FIX 1: only swap active slots AFTER the incoming image has loaded
@@ -119,31 +136,27 @@ export default function Gallery() {
       setCategory(cat);
       setIndex(0);
       crossfadeTo(imgUrl(cat, 0));
-      resetTimer();
     },
-    [crossfadeTo, resetTimer],
+    [crossfadeTo],
   );
-
-  // Auto-play — restarts from zero whenever timerKey changes (manual click or category switch)
-  // useEffect(() => {
-  //     const id = setInterval(next, AUTOPLAY_MS);
-  //     return () => clearInterval(id);
-  // }, [next, timerKey]);
-
-  const images = IMAGES[category];
 
   return (
     <div
+      ref={hostRef}
       className="group relative w-full h-full overflow-hidden"
       onClick={() => {
         next();
-        resetTimer();
       }}
     >
       {/* Slot A */}
       <img
-        src={slotA.src}
+        src={galleryInView ? slotA.src : undefined}
         alt=""
+        loading="lazy"
+        decoding="async"
+        width={600}
+        height={600}
+        onLoad={() => setReady(true)}
         className="absolute inset-0 w-full h-full object-cover"
         style={{
           opacity: slotA.active ? 1 : 0,
@@ -155,8 +168,12 @@ export default function Gallery() {
 
       {/* Slot B */}
       <img
-        src={slotB.src}
+        src={galleryInView ? slotB.src : undefined}
         alt=""
+        loading="lazy"
+        decoding="async"
+        width={600}
+        height={600}
         className="absolute inset-0 w-full h-full object-cover"
         style={{
           opacity: slotB.active ? 1 : 0,

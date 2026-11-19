@@ -5,6 +5,8 @@ import { SVGProps } from "react";
 
 const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
   const [isMobile, setIsMobile] = React.useState<boolean | null>(null);
+  const [inView, setInView] = React.useState(false);
+  const hostRef = React.useRef<SVGSVGElement>(null);
 
   React.useEffect(() => {
     const query = window.matchMedia("(max-width: 767.98px)");
@@ -14,18 +16,29 @@ const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
     return () => query.removeEventListener("change", update);
   }, []);
 
+  React.useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: "200px" },
+    );
+    observer.observe(host);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <>
-      <svg
-        width={1000}
-        height={1000}
-        viewBox="0 0 1000 1000"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-        className={["group/card", className].filter(Boolean).join(" ")}
-        {...props}
-      >
+    <svg
+      ref={hostRef}
+      width={1000}
+      height={1000}
+      viewBox="0 0 1000 1000"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      className={["group/card", className].filter(Boolean).join(" ")}
+      {...props}
+    >
         <g clipPath="url(#clip0_2112_67)">
           <rect width={1000} height={1000} rx={64} fill="#F7F7F9" />
           <path
@@ -44,11 +57,12 @@ const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
             stroke="#E0E0E2"
             strokeWidth={5}
           />
-          <g
+          <a
+            href="https://github.com/sherucon/brew-lsd"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open BrewLSD"
             className="group/button cursor-pointer"
-            onClick={() =>
-              window.open("https://github.com/sherucon/brew-lsd", "_blank")
-            }
           >
             <circle
               id="button"
@@ -72,7 +86,7 @@ const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
               strokeLinecap="round"
               strokeLinejoin="round"
             />
-          </g>
+          </a>
           <rect
             x={58}
             y={263}
@@ -87,7 +101,7 @@ const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
             d="M750 750H1069V1069H750V750Z"
             fill="url(#pattern1_2112_67)"
           >
-            {isMobile === false && (
+            {isMobile === false && inView && (
               <animateTransform
                 attributeName="transform"
                 type="rotate"
@@ -137,8 +151,7 @@ const SVGComponent = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
             xlinkHref="https://portfolio.sherucon.me/work-cards/brewlsd/holo.webp"
           />
         </defs>
-      </svg>
-    </>
+    </svg>
   );
 };
 export default SVGComponent;

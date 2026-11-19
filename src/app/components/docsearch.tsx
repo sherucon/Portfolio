@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import svgPaths from "./svg";
 
 const PHRASES = [
@@ -16,21 +16,36 @@ const PAUSE_AFTER_TYPE = 1800;
 const PAUSE_AFTER_DELETE = 400;
 
 export default function DocSearch() {
+  const hostRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
   const [displayed, setDisplayed] = useState("Ask anything");
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(PHRASES[0].length);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showCursor, setShowCursor] = useState(true);
 
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: "200px" },
+    );
+    observer.observe(host);
+    return () => observer.disconnect();
+  }, []);
+
   // Cursor blink
   useEffect(() => {
+    if (!inView) return;
     if (window.matchMedia("(max-width: 767.98px)").matches) return;
 
     const id = setInterval(() => setShowCursor((v) => !v), 530);
     return () => clearInterval(id);
-  }, []);
+  }, [inView]);
 
   useEffect(() => {
+    if (!inView) return;
     if (window.matchMedia("(max-width: 767.98px)").matches) return;
 
     const current = PHRASES[phraseIndex];
@@ -64,10 +79,10 @@ export default function DocSearch() {
       }, PAUSE_AFTER_DELETE);
       return () => clearTimeout(id);
     }
-  }, [charIndex, isDeleting, phraseIndex]);
+  }, [charIndex, isDeleting, phraseIndex, inView]);
 
   return (
-    <div className="size-full flex items-center justify-center bg-transparent">
+    <div ref={hostRef} className="size-full flex items-center justify-center bg-transparent">
       <div
         className="bg-white/40 backdrop-blur-sm border border-white/40 overflow-clip relative rounded-full shadow-[0_0px_32px_0_rgba(0,0,0,0.5)]"
         style={{ width: "650px", height: "82px" }}

@@ -7,10 +7,29 @@ const SVGComponent = ({
   ...props
 }: React.SVGProps<SVGSVGElement>) => {
   const videoRef = React.useRef<HTMLVideoElement>(null);
+  const hostRef = React.useRef<SVGSVGElement>(null);
+  const [inView, setInView] = React.useState(false);
   const [videoVisible, setVideoVisible] = React.useState(true);
+
+  React.useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "300px" },
+    );
+    observer.observe(host);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <svg
+      ref={hostRef}
       width={1000}
       height={1000}
       viewBox="0 0 1000 1000"
@@ -75,30 +94,32 @@ const SVGComponent = ({
           strokeWidth={5}
         />
         <foreignObject x={0} y={189} width={1000} height={811}>
-          <video
-            ref={videoRef}
-            className={[
-              "h-full w-full object-cover transition-opacity duration-300 ease-in-out",
-              videoVisible ? "opacity-100" : "opacity-0",
-            ].join(" ")}
-            src="https://portfolio.sherucon.me/output-smooth.webm"
-            autoPlay
-            muted
-            playsInline
-            preload="auto"
-            aria-hidden="true"
-            tabIndex={-1}
-            onEnded={() => {
-              setVideoVisible(false);
-              window.setTimeout(() => {
-                const video = videoRef.current;
-                if (!video) return;
-                video.currentTime = 0;
-                void video.play();
-                setVideoVisible(true);
-              }, 300);
-            }}
-          />
+          {inView && (
+            <video
+              ref={videoRef}
+              className={[
+                "h-full w-full object-cover transition-opacity duration-300 ease-in-out",
+                videoVisible ? "opacity-100" : "opacity-0",
+              ].join(" ")}
+              src="https://portfolio.sherucon.me/output-smooth.webm"
+              autoPlay
+              muted
+              playsInline
+              preload="auto"
+              aria-hidden="true"
+              tabIndex={-1}
+              onEnded={() => {
+                setVideoVisible(false);
+                window.setTimeout(() => {
+                  const video = videoRef.current;
+                  if (!video) return;
+                  video.currentTime = 0;
+                  void video.play();
+                  setVideoVisible(true);
+                }, 300);
+              }}
+            />
+          )}
         </foreignObject>
       </g>
       <defs>
