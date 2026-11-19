@@ -28,7 +28,7 @@ const SVGComponent = ({
           fontSize={64}
           className="graphik-semibold"
         >
-          Archive Redesign
+          Noah White
         </text>
         <text
           x={58}
@@ -37,7 +37,7 @@ const SVGComponent = ({
           fontSize={32}
           className="graphik"
         >
-          Archive - Noah White
+          Archive Redesign
         </text>
         <g
           className="group/button cursor-pointer"
