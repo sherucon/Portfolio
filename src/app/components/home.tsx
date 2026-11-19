@@ -34,8 +34,8 @@ const INITIAL_MESSAGES: ChatMessage[] = [
     text: "want to work together? or just wanna chat? send me a msg here, yes here",
     delay: 0.15,
   },
-  { id: 2, from: "me", text: "That is alright, bet", delay: 0.95 },
-  { id: 3, from: "them", text: "What’s your name?", delay: 1.75 },
+  { id: 2, from: "me", text: "aight, bet", delay: 0.95 },
+  { id: 3, from: "them", text: "what’s your name?", delay: 1.75 },
 ];
 
 const EMPTY_ANSWERS: Answers = {
