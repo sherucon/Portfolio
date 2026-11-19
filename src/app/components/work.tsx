@@ -4,6 +4,7 @@ import ZoopCard from "./zoop-card";
 import BrewLSDCard from "./brewlsd-card";
 import PotenadCard from "./potenad-card";
 import VerityCard from "./verity-card";
+import ArchiveRedesignCard from "./archive-redesign-card";
 
 export default function Work({ stacked = false }: { stacked?: boolean }) {
   return (
@@ -59,6 +60,9 @@ export default function Work({ stacked = false }: { stacked?: boolean }) {
         </div>
         <div className="aspect-square bg-[#f7f7f9] rounded-4xl overflow-hidden">
           <BrewLSDCard className="block h-full w-full" />
+        </div>
+        <div className="aspect-square bg-[#f7f7f9] rounded-4xl overflow-hidden">
+          <ArchiveRedesignCard className="block h-full w-full" />
         </div>
       </div>
 
