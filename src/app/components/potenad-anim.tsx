@@ -298,7 +298,6 @@ export default function PotenadAnim() {
   useEffect(() => {
     const host = hostRef.current;
     if (!host) return;
-    if (window.matchMedia("(max-width: 767.98px)").matches) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let inView = false;
